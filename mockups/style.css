@@ -1,0 +1,105 @@
+/********************************
+General Styling
+********************************/
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  border-top: 10px solid #44f;
+  border-bottom: 10px solid #44f;
+  text-align: center;
+  max-width: 100%;
+}
+
+.primary-container {
+  max-width: 90%;
+  margin: 0 auto;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+
+
+/********************************
+Header
+********************************/
+
+header {
+  max-width: 100%;
+  margin: 0 auto;
+
+}
+
+header h1 {
+  font-size: 3rem;
+}
+
+header h2,
+header h3 {
+  font-size: 1.7rem;
+}
+
+header h4 {
+  font-size: 1rem;
+}
+
+
+
+/********************************
+Nav
+********************************/
+
+nav {
+  text-align: center;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #444;
+}
+
+nav ul {
+  background-color: #99f;
+  max-width: 100%;
+}
+
+nav li {
+  display: inline-block;
+  margin: auto;
+}
+
+
+
+/********************************
+Main Content
+********************************/
+section {
+  margin: 20px 0;
+}
+
+section li {
+  margin: 20px 0;
+  background-color: #add;
+}
+
+section a {
+  max-width: 100%;
+  background-color: #eee;
+}
+
+
+
+/********************************
+Footer
+********************************/
+
+footer {
+  border-top: 1px solid #444;
+}
+
+
+
