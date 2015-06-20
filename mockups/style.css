@@ -14,7 +14,14 @@ body {
   max-width: 100%;
 }
 
-.primary-container {
+.heading-container {
+  max-width: 100%;
+  margin: 0;
+  background-color: #444;
+}
+
+.content-container {
+  font-family: 'Overlock', sans-serif;
   max-width: 90%;
   margin: 0 auto;
 }
@@ -32,13 +39,14 @@ Header
 ********************************/
 
 header {
-  max-width: 100%;
+  max-width: 90%;
   margin: 0 auto;
-
+  font-family: 'Philosopher', sans-serif;
 }
 
 header h1 {
   font-size: 3rem;
+  margin: 0;
 }
 
 header h2,
@@ -47,7 +55,10 @@ header h3 {
 }
 
 header h4 {
+  font-family: 'Overlock', sans-serif;
   font-size: 1rem;
+  margin: 0;
+  padding-bottom: 40px;
 }
 
 
@@ -59,17 +70,22 @@ Nav
 nav {
   text-align: center;
   padding-bottom: 20px;
-  border-bottom: 1px solid #444;
+  margin-top: 0;
 }
 
 nav ul {
-  background-color: #99f;
+  margin: 0;
   max-width: 100%;
 }
 
 nav li {
   display: inline-block;
-  margin: auto;
+  margin: 10px;
+}
+
+nav a {
+  display: block;
+  background-color: #99f;
 }
 
 
@@ -83,12 +99,15 @@ section {
 
 section li {
   margin: 20px 0;
-  background-color: #add;
 }
 
 section a {
   max-width: 100%;
-  background-color: #eee;
+  padding: 10px 0;
+  background-color: #ddd;
+  display: block;
+  font-size: 1.5rem;
+  border-radius: 5px;
 }
 
 
@@ -98,6 +117,7 @@ Footer
 ********************************/
 
 footer {
+  font-family: 'Philosopher', sans-serif;
   border-top: 1px solid #444;
 }
 
