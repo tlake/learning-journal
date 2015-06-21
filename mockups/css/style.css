@@ -8,22 +8,26 @@ General Styling
 
 body {
   margin: 0;
-  border-bottom: 10px solid #444;
   text-align: center;
   max-width: 100%;
+  background-image: linear-gradient(rgba(144,0,32,0.4), rgba(144,0,32,0.4)),
+                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                    url('../img/leather.jpg');
+  background-size: cover;
 }
 
 .heading-container {
   font-family: 'Philosopher', sans-serif;
   max-width: 100%;
   margin: 0;
-  background-color: #444;
 }
 
 .content-container {
   font-family: 'Overlock', sans-serif;
-  max-width: 90%;
+  max-width: 100%;
   margin: 0 auto;
+  background-color: #fbf4da;
 }
 
 ul {
@@ -49,13 +53,14 @@ header {
 }
 
 header h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin: 0;
+  padding-top: 30px;
 }
 
 header h2,
 header h3 {
-  font-size: 1.7rem;
+  font-size: 1.2rem;
 }
 
 header h4 {
@@ -91,12 +96,12 @@ nav a {
   max-width: 100%;
   padding: 10px;
   display: block;
-  background-color: #99f;
+  background-color: #999;
   border-radius: 10px 10px 0 0;
 }
 
 nav .current-page {
-  background-color: #fff;
+  background-color: #fbf4da;
 }
 
 
@@ -110,15 +115,18 @@ section {
 
 section li {
   margin: 20px 0;
+  background-color: #66f;
+  border-radius: 2px 2px 20px;
 }
 
 section a {
   max-width: 100%;
-  padding: 10px 0;
+  padding: 10px;
   background-color: #ddd;
   display: block;
   font-size: 1.5rem;
-  border-radius: 5px;
+  border-radius: 20px 2px;
+  box-shadow: 0 5px 2px -2px #999;
 }
 
 
@@ -128,9 +136,14 @@ Footer
 ********************************/
 
 footer {
+  margin: 0;
   font-family: 'Philosopher', sans-serif;
-  border-top: 1px solid #444;
+  color: #eee;
 }
 
+footer p {
+  margin: 0;
+  padding: 20px 0;
+}
 
 
