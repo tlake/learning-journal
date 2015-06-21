@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="style.css">
+    <link href='http://fonts.googleapis.com/css?family=Overlock:400,700|Philosopher:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="viewport" content="width=device-width">
   </head>
   <body>
     <header>
         <h1>Learning Journal</h1>
         <h2>Code Fellows: Python Development Accelerator</h2>
-        <h3>Seattle, June 2015</h3>
-        <h4>a project by tanner lake</h4>
+        <h3>Seattle, Summer 2015</h3>
+        <h4>- a project by tanner lake -</h4>
     </header>
     <nav>
         <ul>
           <li><a href="index.html">Home</a></li>
-          <li><a href="new_entry.html">New Entry</a></li>
-          <li><a href="index.html">Contact</a></li>
+          <li><a class="current-page" href="new_entry.html">New Entry</a></li>
         </ul>
     </nav>
     <section>
         <form>
             <p>Entry Title:</p>
-            <input type="text" name="title">
+            <input id="title" type="text" name="title">
             <p>Entry Content:</p>
             <textarea name="text"></textarea>
-            <input type="submit" value="Done!">
+            <input id="submit" type="submit" value="Done!">
         </form>
     </section>
     <footer>

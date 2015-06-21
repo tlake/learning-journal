@@ -10,19 +10,11 @@ body {
   margin: 0;
   text-align: center;
   max-width: 100%;
-}
-
-.heading-container {
-  font-family: 'Philosopher', sans-serif;
-  max-width: 100%;
-  margin: 0;
-}
-
-.content-container {
-  font-family: 'Overlock', sans-serif;
-  max-width: 100%;
-  margin: 0 auto;
-  background-color: #fbf4da;
+  background-image: linear-gradient(rgba(144,0,32,0.4), rgba(144,0,32,0.4)),
+                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                    url('../img/leather.jpg');
+  background-size: 500px;
 }
 
 ul {
@@ -42,15 +34,25 @@ Header
 ********************************/
 
 header {
-  max-width: 90%;
-  margin: 0 auto;
-  color: #eee;
-  box-shadow: 0 10px 10px #333;
+  font-family: 'Philosopher', sans-serif;
+  color: #bbb;
+  text-shadow: 0px 1px #fff,
+               0px -1px #111;
+  max-width: 100%;
+  margin: 10px 10px 0;
+  padding: 0 5%;
   background-image: linear-gradient(rgba(144,0,32,0.4), rgba(144,0,32,0.4)),
                     linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
                     linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
                     url('../img/leather.jpg');
-  background-size: cover;
+  background-size: 500px;
+  border-top: 3px dashed #E6C200;
+  border-left: 3px dashed #E6C200;
+  border-right: 3px dashed #E6C200;
+  border-radius: 10px 10px 0 0;
+/* box-shadow: 0 3px 3px rgba(0,0,0,0.4); */
+  position: relative;
+  z-index: 1;
 }
 
 header h1 {
@@ -65,10 +67,10 @@ header h3 {
 }
 
 header h4 {
-  font-family: 'Overlock', sans-serif;
-  font-size: 1rem;
+/*  font-family: 'Overlock', sans-serif;*/
+  font-size: 0.9rem;
   margin: 0;
-  padding-bottom: 40px;
+  padding: 20px 0 40px;
 }
 
 
@@ -78,32 +80,47 @@ Nav
 ********************************/
 
 nav {
+  font-family: 'Philosopher', sans-serif;
   text-align: center;
   margin: 0;
+  padding: 0;
+  font-size: 1rem;
   background-color: #fbf4da;
+  /* the shadow cast by the top leather onto the paper below: */
+  background-image: linear-gradient(rgba(0,0,0,0.6), transparent 15px);
 }
 
 nav ul {
   margin: 0;
+  padding: 0;
   max-width: 100%;
 }
 
 nav li {
   display: inline-block;
-  margin: 10px;
-  margin-bottom: 0;
+  margin: 0;
+  padding: 0px;
 }
 
 nav a {
   max-width: 100%;
-  padding: 10px;
+  margin: 0 10px;
+  padding: 30px 10px 15px;
   display: block;
-  background-color: #999;
-  border-radius: 10px 10px 0 0;
+  font-weight: 700;
+  color: gold;
+  background-color: #104E8B;
+  border-radius: 0 0 5px 5px;
+  /* the shadow cast by the top leather onto the tabs below: */
+  background-image: linear-gradient(rgba(0,0,0,0.4), transparent 10px);
+  /* the shadow cast by the tabs onto the paper below: */
+  box-shadow: 2px 2px 3px rgba(0,0,0,0.6);
 }
 
-nav .current-page {
-  background-color: #fbf4da;
+nav .current-page  {
+  padding-bottom: 25px;
+  color: gold;
+  background-color: #800020;
 }
 
 
@@ -112,24 +129,35 @@ nav .current-page {
 Main Content
 ********************************/
 section {
-  margin: -5px 0 0;
-  padding: 20px 0;
+  font-family: 'Overlock', sans-serif;
+  text-align: left;
+  max-width: 100%;
+  margin: -1px 0 0;
+  padding: 20px 40px;
+  color: #555;
+  background-color: #FBF4DA;
+  /* the shadow cast by the bottom leather onto the paper above: */
+  background-image: linear-gradient(to top, rgba(0,0,0,0.4), transparent 10px);
 }
 
-section li {
+#toc li {
   margin: 20px 0;
-  background-color: #66f;
-  border-radius: 2px 2px 20px;
 }
 
-section a {
+#toc a {
   max-width: 100%;
   padding: 10px;
-  background-color: #ddd;
   display: block;
   font-size: 1.5rem;
-  border-radius: 20px 2px;
-  box-shadow: 0 5px 2px -2px #999;
+  border-radius: 10px;
+}
+
+#toc a:visited {
+  color: #555;
+}
+
+#toc a:hover {
+  background-color: #FEFCF4;
 }
 
 
@@ -139,14 +167,17 @@ Footer
 ********************************/
 
 footer {
-  margin: 0;
+  margin: 0 10px 10px;
   font-family: 'Philosopher', sans-serif;
-  color: #eee;
-  background-image: linear-gradient(rgba(144,0,32,0.4), rgba(144,0,32,0.4)),
-                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                    url('../img/leather.jpg');
-  background-size: cover;
+  color: #bbb;
+  text-shadow: 0px 1px #fff,
+               0px -1px #111;
+  position: relative;
+  z-index: 1;
+  border-bottom: 3px dashed #E6C200;
+  border-left: 3px dashed #E6C200;
+  border-right: 3px dashed #E6C200;
+  border-radius: 0 0 10px 10px ;
 }
 
 footer p {
@@ -154,4 +185,56 @@ footer p {
   padding: 20px 0;
 }
 
+
+
+/********************************
+PAGE: DETAIL
+********************************/
+
+.textwall {
+  text-align: justify;
+  padding: 20px 10;
+}
+
+a.edit {
+  text-align: left;
+  display: inline-block;
+  font-size: 1rem;
+  border-radius: 0 5px 5px 0;
+  padding: 15px 15px 15px 40%;
+  margin: 0 0 10px -100%;
+  font-weight: 700;
+  color: gold;
+  background-color: #104E8B;
+  /* the shadow cast by the tabs onto the paper below: */
+  box-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+}
+
+
+
+/********************************
+PAGE: NEW ENTRY
+********************************/
+
+section {
+  text-align: center;
+}
+
+form {
+  padding: 10px;
+}
+
+#title {
+  width: 60%;
+}
+
+textarea {
+  width: 80%;
+  height: 10rem;
+}
+
+#submit {
+  display: block;
+  margin: 20px auto 0;
+}
 
