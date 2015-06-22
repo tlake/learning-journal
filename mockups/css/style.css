@@ -80,6 +80,7 @@ nav {
   text-align: center;
   margin: 0;
   padding: 0;
+  height: 126px;
   font-size: 1rem;
   background-color: #fbf4da;
   /* the shadow cast by the top leather onto the paper below: */
@@ -187,9 +188,8 @@ footer p {
 PAGE: DETAIL
 ********************************/
 
-.textwall {
-  text-align: justify;
-  padding: 20px 10;
+.entry-header {
+  text-align: center;
 }
 
 a.edit {
@@ -197,13 +197,18 @@ a.edit {
   display: inline-block;
   font-size: 1rem;
   border-radius: 0 5px 5px 0;
-  padding: 15px 15px 15px 40%;
-  margin: 0 0 10px -100%;
+  padding: 15px 15px 15px 60px;
+  margin: 0 0 10px -50px;
   font-weight: 700;
   color: gold;
   background-color: #104E8B;
-  /* the shadow cast by the tabs onto the paper below: */
+  /* the shadow cast by the tab onto the paper below: */
   box-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+}
+
+.textwall {
+  text-align: justify;
+  padding: 20px 10;
 }
 
 
@@ -214,7 +219,19 @@ PAGE: NEW ENTRY
 
 form {
   text-align: center;
-  padding: 10px;
+  margin-top: -30px;
+  padding: 0 10px 10px;
+}
+
+input {
+  font-family: 'Overlock', sans-serif;
+  font-size: 1.2rem;
+  color: #555;
+  border: none;
+}
+
+input:focus {
+    outline: none;
 }
 
 #title {
@@ -222,13 +239,32 @@ form {
 }
 
 textarea {
+  font-family: 'Overlock', sans-serif;
+  font-size: 1.2rem;
+  color: #555;
   width: 80%;
   height: 10rem;
+  border: none;
+}
+
+textarea:focus {
+    outline: none;
 }
 
 #submit {
   display: block;
-  margin: 20px auto 0;
+  width: 100px;
+  margin: 50px auto -30px;
+  padding: 15px 10px 30px;
+  display: block;
+  font-weight: 700;
+  color: #800020;
+  background-color: #ffd700;
+  border-radius: 5px 5px 0 0;
+  /* the shadow cast by the bottom leather onto the tab below: */
+  background-image: linear-gradient(to top, rgba(0,0,0,0.4), transparent 5px);
+  /* the shadow cast by the tab onto the paper below: */
+  box-shadow: 0 0px 2px 1px rgba(0,0,0,0.6);
 }
 
 
@@ -249,29 +285,10 @@ RESPONSIVE
     text-shadow: 0px 1px #fff,
                  0px 2px 1px #fff,
                  0px -1px #111;
-/*                 0px -2px 1px #111;*/
-/*
-    max-width: 100%;
-    margin: 2.5% 2.5% 0;
-    padding: 0 5%;
-    background-image: linear-gradient(rgba(144,0,32,0.4), rgba(144,0,32,0.4)),
-                      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                      linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                      url('../img/leather.jpg');
-    background-size: 500px;
-    border-top: 3px dashed #E6C200;
-    border-left: 3px dashed #E6C200;
-    border-right: 3px dashed #E6C200;
-    border-radius: 10px 10px 0 0;
-*/
   }
 
   header h1 {
     font-size: 3rem;
-/*
-    margin: 0;
-    padding-top: 30px;
-*/
   }
   
   header h2,
@@ -281,10 +298,6 @@ RESPONSIVE
   
   header h4 {
     font-size: rem;
-/*
-    margin: 0;
-    padding: 20px 0 40px;
-*/
   }
 
   
@@ -314,15 +327,24 @@ RESPONSIVE
   
   /* Page: Detail -------------------------------- */
   
+  .entry-header {
+    text-align: justify;
+    padding-left: 10%;
+  }
+
   a.edit {
-    margin: 0;
-    padding: 0;
+    font-size: 1.5rem;
   }
   
-  #textwall {
+  .textwall {
     padding-left: 10%;
     padding-right: 10%;
+    font-size: 1.3rem;
   }
+
+  #submit {
+    width: 150px;
+    font-size: 1.5rem;
 
   
   /* Page: New Entry -------------------------------- */
