@@ -34,7 +34,7 @@ DATABASE_URL = os.environ.get(
 
 def init_db():
 
-    engine = sa.create_engine("postgresql://tanner@localhost:5432/learning-journal", echo=True)
+    engine = sa.create_engine(DATABASE_URL, echo=True)
 
     Base.metadata.create_all(engine)
 
