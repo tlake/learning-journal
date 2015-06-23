@@ -25,6 +25,13 @@ class Entry(Base):
         return "<Entry(title='%s', creation_date='%s')>" % (self.title, self.creation_date)
 
 
+# make a module-level constant for the connection URI (you'll need it elsewhere):
+DATABASE_URL = os.environ.get(
+    'DATABASE_URL',
+    'postgresql://tanner@localhost:5432/learning-journal'
+)
+
+
 def init_db():
 
     engine = sa.create_engine("postgresql://tanner@localhost:5432/learning-journal", echo=True)
