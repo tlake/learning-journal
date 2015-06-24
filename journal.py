@@ -7,6 +7,24 @@ from waitress import serve
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
+# sessionmaker is a factory that makes factories
+#   Session = sessionmaker(bind=engine)
+#     recall that Session is a class being defined as a sessionmaker class
+#     but where the bind is equal to the engine variable that should be defined
+#     elsewhere; the engine is the connection, the Session is the cursor.
+#   session = Session()
+#     actually starts a session
+# scoped_session is similar to that process above, only a scoped session helps to
+# maintain the association of one session with one request, even when there are
+# many many requests happening all at once.
+from sqlalchemy.orm import sessionmaker, scoped_session
+from zope.sqlalchemy import ZopeTransactionExtension
+
+
+# bind a symbol, available to all the code in the project, at the module scope which
+# will be responsible creating session for each request. it is the point of access
+# to the database.
+DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
 
 Base = declarative_base()
@@ -50,10 +68,16 @@ def main():
     debug = os.environ.get('DEBUG', True)
     settings['reload_all'] = debug
     settings['debug_all'] = debug
+    if not os.environ.get("TESTING", False):
+        # only bind the session if we are not testing
+        engine = sa.create_engine(DATABASE_URL)
+        DBSession.configure(bind=engine)
     # configuration setup
     config = Configurator(
         settings=settings
     )
+    # we want to use the transaction management provided by pyramid-tm
+    config.include("pyramid_tm")
     config.add_route('home', '/')
     config.scan()
     app = config.make_wsgi_app()
