@@ -59,3 +59,13 @@ def db_session(request, connection):
 #   ensure that no work in the database will persist between tests
 # This means that this fixture must be used for each test. That is the default
 #   scope so we do not designate a scope for this fixture.
+
+
+
+def test_write_entry(db_session):
+    kwargs = {'title': "Test Title", 'text': "Test entry text"}
+    kwargs['session'] = db_session
+    # first, assert that there are no entries in the database
+    assert db_session.query(journal.Entry).count() == 0
+    # now, create an entry using the 'write' class method
+    entry = journal.Entry.write(**kwargs)
