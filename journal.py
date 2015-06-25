@@ -27,6 +27,7 @@ from sqlalchemy.exc import DBAPIError
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from cryptacular.bcrypt import BCRYPTPasswordManager
+from pyramid.security import remember, forget
 
 """
 bind a symbol, available to all the code in the project, at the
@@ -148,6 +149,31 @@ def do_login(request):
     return False
 
 
+@ view_config(route_name='login', renderer='templates/login.jinja2')
+def login(request):
+    username = request.params.get('username', '')
+    error = ''
+    if request.method == 'POST':
+        error = 'Login Failed'
+        authenticated = False
+        try:
+            authenticated = do_login(request)
+        except ValueError as e:
+            error = str(e)
+
+        if authenticated:
+            headers = remember(request, username)
+            return HTTPFound(request.route_url('home'), headers=headers)
+
+    return {'error': error, 'username': username}
+
+
+@view_config(route_name='logout')
+def logout(request):
+    headers = forget(request)
+    return HTTPFound(request.route_url('home'), headers=headers)
+
+
 def main():
     """Create a configured wsgi app"""
     settings = {}
@@ -179,6 +205,8 @@ def main():
     config.include("pyramid_jinja2")
     config.add_route('home', '/')
     config.add_route('add', '/add')
+    config.add_route('login', '/login')
+    config.add_route('logout', '/logout')
     config.add_route('other', '/other/{special_val}')
     config.scan()
     app = config.make_wsgi_app()
