@@ -4,6 +4,7 @@ import os
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
+from pyramid import testing
 
 
 TEST_DATABASE_URL = os.environ.get(
@@ -194,13 +195,13 @@ def test_listing(app, entry):
     use app fixture because we want to ensure that we have an
     application to work with.
 
-    'post' method sends an 'HTTP POST' request to provided URL.
+    `post` method sends an `HTTP POST` request to provided URL.
 
-    'params' arg represents for input data. IRL, user would have
+    `params` arg represents for input data. IRL, user would have
     entered data into HTML <form> elements.
 
-    'status' arg asserts that the HTTP status code of the response
-    matches. Here, we're looking for a 'redirect' response because we're
+    `status` arg asserts that the HTTP status code of the response
+    matches. Here, we're looking for a `redirect` response because we're
     expecting the browser to be redirected to a different page once the
     user submits their information.
  """
@@ -209,7 +210,7 @@ def test_listing(app, entry):
 def test_post_to_add_view(app):
     entry_data = {
         'title': 'Hello there',
-        'text': 'This is a post.'
+        'text': 'This is a post.',
     }
     response = app.post('/add', params=entry_data, status='3*')
     redirected = response.follow()
@@ -221,3 +222,69 @@ def test_post_to_add_view(app):
 def test_add_no_params(app):
     response = app.post('/add', status=500)
     assert 'IntegrityError' in response.body
+
+
+"""
+    Below:
+
+    The keys to our `settings` dict match those we use in the real
+    configuration of our application
+
+    The `setUp` function from `pyramid.testing` provides the setup needed to
+    make a `DummyRequest` act like a real one
+
+    The `tearDown` function reverses that process for good test isolation
+
+    The request we return will behave like a real request in that it will
+    provide access to the settings we generated
+"""
+
+
+@pytest.fixture(scope='function')
+def auth_req(request):
+    settings = {
+        'auth.username': 'admin',
+        'auth.password': 'secret',
+    }
+    testing.setUp(settings=settings)
+    req = testing.DummyRequest()
+
+    def cleanup():
+        testing.tearDown()
+
+    request.addfinalizer(cleanup)
+
+    return req
+
+
+"""
+    Below:
+
+    Tests that use our new `auth_req` feature
+"""
+
+
+def test_do_login_success(auth_req):
+    from journal import do_login
+    auth_req.params = {'username': 'admin', 'password': 'secret'}
+    assert do_login(auth_req)
+
+
+def test_do_login_bad_pass(auth_req):
+    from journal import do_login
+    auth_req.params = {'username': 'admin', 'password': 'wrong'}
+    assert not do_login(auth_req)
+
+
+def test_do_login_bad_user(auth_req):
+    from journal import do_login
+    auth_req.params = {'username': 'bad', 'password': 'secret'}
+    assert not do_login(auth_req)
+
+
+def test_do_login_missing_params(auth_req):
+    from journal import do_login
+    for params in ({'username': 'admin'}, {'password': 'secret'}):
+        auth_req.params = params
+        with pytest.raises(ValueError):
+            do_login(auth_req)

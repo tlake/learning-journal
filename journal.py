@@ -75,7 +75,7 @@ make a module-level constant for the connection URI
 """
 DATABASE_URL = os.environ.get(
     'DATABASE_URL',
-    'postgresql://tanner@localhost:5432/learning-journal'
+    'postgresql://tanner@localhost:5432/learning-journal',
 )
 
 
@@ -151,7 +151,7 @@ def main():
         settings=settings,
         authentication_policy=AuthTktAuthenticationPolicy(
             secret=auth_secret,
-            hashalg='sha512'
+            hashalg='sha512',
         ),
         authorization_policy=ACLAuthorizationPolicy(),
     )
