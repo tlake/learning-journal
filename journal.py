@@ -24,6 +24,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from zope.sqlalchemy import ZopeTransactionExtension
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.exc import DBAPIError
+from pyramid.authentication import AuthTktAuthenticationPolicy
 
 
 """
@@ -142,9 +143,15 @@ def main():
         # only bind the session if it isn't already bound, while testing
         engine = sa.create_engine(DATABASE_URL)
         DBSession.configure(bind=engine)
-    # configuration setup
+    # add a secret value for auth tkt signing
+    auth_secret = os.environ.get('JOURNAL_AUTH_SECRET', 'itsaseekrit')
+    # and add a new value to the constructor for our Configurator:
     config = Configurator(
-        settings=settings
+        settings=settings,
+        authentication_policy=AuthTktAuthenticationPolicy(
+            secret=auth_secret,
+            hashalg='sha512'
+        ),
     )
     # we want to use the transaction management provided by pyramid-tm
     config.include("pyramid_tm")
