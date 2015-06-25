@@ -31,10 +31,15 @@ def connection(request):
     engine = create_engine(TEST_DATABASE_URL)
     journal.Base.metadata.create_all(engine)
     connection = engine.connect()
+    """Through engine, create a connection to the database"""
     journal.DBSession.registry.clear()
+    """At the start of the session, we're certain our db is clear"""
     journal.DBSession.configure(bind=connection)
+    """Our db system that we;re actually using is bound to the
+    connection we're actually using"""
     journal.Base.metadata.bind = engine
     request.addfinalizer(journal.Base.metadata.drop_all)
+    """get rid of everything we just made"""
     return connection
 """
 We want to have same connection across all tests, so scope fixture to session.
@@ -51,15 +56,25 @@ By returning connection from this fixture, tests or fixtures that depend on it
 
 
 # This fixture responsible for providing a db session to be used in tests.
+"""on the function level:"""
+
+
 @pytest.fixture()
 def db_session(request, connection):
+    """ does this inside the transaction that's already opened """
     from transaction import abort
     trans = connection.begin()
     request.addfinalizer(trans.rollback)
     request.addfinalizer(abort)
+    """ These finalizers rollback the session to before any changes were
+    made by the tests """
 
     from journal import DBSession
     return DBSession
+    """ because we return DBSession, any test that includes this fixture
+    will have a connection to the database session, which will be rolled
+    back after we're done with it."""
+
 """
 Notice that the above fixture requires not only the request fixture provided by
   pytest, but also the connection fixture you just wrote.
@@ -140,6 +155,8 @@ def app():
     from webtest import TestApp
     from journal import main
     app = main()
+    """ main is just a factory that builds and returns configured
+    wsgi apps """
     return TestApp(app)
 
 

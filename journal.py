@@ -99,7 +99,7 @@ def main():
     settings['reload_all'] = debug
     settings['debug_all'] = debug
     if not os.environ.get("TESTING", False):
-        # only bind the session if we are not testing
+        # only bind the session if it isn't already bound, while testing
         engine = sa.create_engine(DATABASE_URL)
         DBSession.configure(bind=engine)
     # configuration setup
