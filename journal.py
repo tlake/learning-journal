@@ -29,6 +29,10 @@ from pyramid.authorization import ACLAuthorizationPolicy
 from cryptacular.bcrypt import BCRYPTPasswordManager
 from pyramid.security import remember, forget
 
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+
+
 """
 bind a symbol, available to all the code in the project, at the
 module scope which will be responsible creating session for each
@@ -203,6 +207,7 @@ def main():
     # we want to use the transaction management provided by pyramid-tm
     config.include("pyramid_tm")
     config.include("pyramid_jinja2")
+    config.add_static_view('static', os.path.join(HERE, 'static'))
     config.add_route('home', '/')
     config.add_route('add', '/add')
     config.add_route('login', '/login')
