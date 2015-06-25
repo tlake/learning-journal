@@ -25,7 +25,7 @@ from zope.sqlalchemy import ZopeTransactionExtension
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.exc import DBAPIError
 from pyramid.authentication import AuthTktAuthenticationPolicy
-from pyramid.autorization import ACLAuthorizationPolicy
+from pyramid.authorization import ACLAuthorizationPolicy
 
 
 """
@@ -84,7 +84,7 @@ def init_db():
     Base.metadata.create_all(engine)
 
 
-# from pyramid.httpexceptions import HTTPNotFound
+from pyramid.httpexceptions import HTTPNotFound
 
 
 @view_config(route_name='other', renderer='string')
@@ -112,7 +112,7 @@ def list_view(request):
         successfully written
 
     (We'll also need to configure a 'route' that will connect to
-    this new 'view function' --> `config.add_route('add', '/add')` )
+    this new 'view function' --> 'config.add_route('add', '/add')' )
 """
 
 
