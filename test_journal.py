@@ -3,7 +3,7 @@ from __future__ import unicode_literals
 import os
 import pytest
 from sqlalchemy import create_engine
-# from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError
 
 
 TEST_DATABASE_URL = os.environ.get(
@@ -97,3 +97,17 @@ def test_write_entry(db_session):
     # id and created should be set automaticall upon writing to db:
     for auto in ['id', 'created']:
         assert getattr(entry, auto, None) is not None
+
+
+def test_entry_no_title_fails(db_session):
+    bad_data = {'text': 'test text'}
+    journal.Entry.write(session=db_session, **bad_data)
+    with pytest.raises(IntegrityError):
+        db_session.flush()
+
+
+def test_entry_no_text_fails(db_session):
+    bad_data = {'title': 'test title'}
+    journal.Entry.write(session=db_session, **bad_data)
+    with pytest.raises(IntegrityError):
+        db_session.flush()
