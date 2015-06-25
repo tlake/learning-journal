@@ -81,23 +81,15 @@ def init_db():
 # from pyramid.httpexceptions import HTTPNotFound
 
 
-@view_config(route_name='home', renderer='templates/test.jinja2')
-def home(request):
-    """
-    .set_trace() inserts a break point. shell will break into a pdb
-    prompt
-    """
-    #   import pdb; pdb.set_trace()
-    #   return "Hello World"
-    return {'one': 'two', 'stuff': ['a', 'b', 'c']}
-
-
 @view_config(route_name='other', renderer='string')
 def other(request):
-    # linter's griping at me about multiple statements on one line,
-    # but I think I'm going to let this one ride because Cris did it
-    import pdb; pdb.set_trace()
     return request.matchdict
+
+
+@view_config(route_name='home', renderer='templates/list.jinja2')
+def list_view(request):
+    entries = Entry.all()
+    return {'entries': entries}
 
 
 def main():

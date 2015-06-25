@@ -133,3 +133,39 @@ def test_read_entries_one(db_session):
     assert entries[0].title > entries[1].title > entries[2].title
     for entry in entries:
         assert isinstance(entry, journal.Entry)
+
+
+@pytest.fixture()
+def app():
+    from webtest import TestApp
+    from journal import main
+    app = main()
+    return TestApp(app)
+
+
+def test_empty_listing(app):
+    response = app.get('/')
+    assert response.status_code == 200
+    actual = response.body
+    expected = 'No entries here so far'
+    assert expected in actual
+
+
+@pytest.fixture()
+def entry(db_session):
+    entry = journal.Entry.write(
+        title='Test Title',
+        text='Test Entry Text',
+        session=db_session
+    )
+    db_session.flush()
+    return entry
+
+
+def test_listing(app, entry):
+    response = app.get('/')
+    assert response.status_code == 200
+    actual = response.body
+    for field in ['title', 'text']:
+        expected = getattr(entry, field, 'absent')
+        assert expected in actual
