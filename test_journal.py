@@ -86,16 +86,21 @@ def db_session(request, connection):
     will have a connection to the database session, which will be rolled
     back after we're done with it."""
 
+
 """
-Notice that the above fixture requires not only the request fixture provided
-by
-  pytest, but also the connection fixture you just wrote.
-You start a new transaction here in this fixture, mocking the actions usually
-  handled by pyramid-tm.
-You also add finalizers to rollback and then abort that transaction, which
-  ensure that no work in the database will persist between tests
-This means that this fixture must be used for each test. That is the default
-  scope so we do not designate a scope for this fixture.
+    Above:
+
+    Notice that the above fixture requires not only the request fixture
+    provided by pytest, but also the connection fixture we just wrote.
+
+    We start a new transaction here in this fixture, mocking the actions
+    usually handled by `pyramid-tm`.
+
+    We also add finalizers to rollback and then abort that transaction, which
+    ensure that no work in the database will persist between tests.
+
+    This means that this fixture must be used for each test. That is the
+    default scope so we do not designate a scope for this fixture.
 """
 
 

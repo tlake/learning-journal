@@ -27,7 +27,6 @@ from sqlalchemy.exc import DBAPIError
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 
-
 """
 bind a symbol, available to all the code in the project, at the
 module scope which will be responsible creating session for each
@@ -84,7 +83,7 @@ def init_db():
     Base.metadata.create_all(engine)
 
 
-from pyramid.httpexceptions import HTTPNotFound
+# from pyramid.httpexceptions import HTTPNotFound
 
 
 @view_config(route_name='other', renderer='string')
@@ -130,6 +129,21 @@ def db_exception(context, request):
     response = Response(context.message)
     response.status_int = 500
     return response
+
+
+def do_login(request):
+    username = request.params.get('username', None)
+    password = request.params.get('password', None)
+    if not (username and password):
+        raise ValueError('both username and password are required')
+
+    settings = request.registry.settings
+    # you can always get hold of application settings with
+    # `request.registry.settings`
+    if username == settings.get('auth.username', ''):
+        if password == settings.get('auth.password', ''):
+            return True
+    return False
 
 
 def main():
