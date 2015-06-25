@@ -25,6 +25,7 @@ from zope.sqlalchemy import ZopeTransactionExtension
 from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.exc import DBAPIError
 from pyramid.authentication import AuthTktAuthenticationPolicy
+from pyramid.autorization import ACLAuthorizationPolicy
 
 
 """
@@ -152,6 +153,7 @@ def main():
             secret=auth_secret,
             hashalg='sha512'
         ),
+        authorization_policy=ACLAuthorizationPolicy(),
     )
     # we want to use the transaction management provided by pyramid-tm
     config.include("pyramid_tm")
