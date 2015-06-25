@@ -38,6 +38,12 @@ class Entry(Base):
     __tablename__ = "entries"
 
     @classmethod
+    def all(cls, session=None):
+        if session is None:
+            session = DBSession
+        return session.query(cls).order_by(cls.created.desc()).all()
+
+    @classmethod
     def write(cls, title=None, text=None, session=None):
         if session is None:
             session = DBSession
@@ -109,8 +115,8 @@ def main():
         settings=settings
     )
     # we want to use the transaction management provided by pyramid-tm
+    config.include("pyramid_tm")
     config.include("pyramid_jinja2")
-    # config.include("pyramid_tm")
     config.add_route('home', '/')
     config.add_route('other', '/other/{special_val}')
     config.scan()
