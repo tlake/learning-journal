@@ -5,6 +5,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 
+
 TEST_DATABASE_URL = os.environ.get(
         'DATABASE_URL',
         'postgresql://tanner@localhost:5432/test-learning-journal'
@@ -12,7 +13,9 @@ TEST_DATABASE_URL = os.environ.get(
 os.environ['DATABASE_URL'] = TEST_DATABASE_URL
 os.environ['TESTING'] = 'True'
 
+
 import journal
+
 
 # This decorator registers the connection function as a fixture with pytest.
 # The scope argument passed to the decorator determines how often a fixture is run:
@@ -69,3 +72,22 @@ def test_write_entry(db_session):
     assert db_session.query(journal.Entry).count() == 0
     # now, create an entry using the 'write' class method
     entry = journal.Entry.write(**kwargs)
+    # the entry we get back ought to be an instance of Entry
+    assert isinstance(entry, journal.Entry)
+    # id and created are generated automatically, but only on writing to
+    # the database
+    # the method should have no id or created attributes at first
+    auto_fields = ['id', 'created']
+    for field in auto_fields:
+        assert getattr(entry, field, None) is None
+    # flush the session to "write" the data to the database
+    db_session.flush()
+    # now we should have one entry:
+    assert db_session.query(journal.Entry).count() == 1
+    for field in kwargs:
+        if field != 'session':
+            assert getattr(entry, field, '') == kwargs[field]
+    # id and created should be set automaticall upon writing to db:
+    for auto in ['id', 'created']:
+        assert getattr(entry, auto, None) is not None
+
