@@ -26,6 +26,7 @@ from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.exc import DBAPIError
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
+from cryptacular.bcrypt import BCRYPTPasswordManager
 
 """
 bind a symbol, available to all the code in the project, at the
@@ -140,9 +141,10 @@ def do_login(request):
     settings = request.registry.settings
     # you can always get hold of application settings with
     # `request.registry.settings`
+    manager = BCRYPTPasswordManager()
     if username == settings.get('auth.username', ''):
-        if password == settings.get('auth.password', ''):
-            return True
+        hashed = settings.get('auth.password', '')
+        return manager.check(hashed, password)
     return False
 
 
@@ -153,7 +155,10 @@ def main():
     settings['reload_all'] = debug
     settings['debug_all'] = debug
     settings['auth.username'] = os.environ.get('AUTH_USERNAME', 'admin')
-    settings['auth.password'] = os.environ.get('AUTH_PASSWORD', 'secret')
+    manager = BCRYPTPasswordManager()
+    settings['auth.password'] = os.environ.get(
+        'AUTH_PASSWORD', manager.encode('secret')
+    )
     if not os.environ.get("TESTING", False):
         # only bind the session if it isn't already bound, while testing
         engine = sa.create_engine(DATABASE_URL)

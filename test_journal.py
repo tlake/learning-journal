@@ -5,6 +5,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 from pyramid import testing
+from cryptacular.bcrypt import BCRYPTPasswordManager
 
 
 TEST_DATABASE_URL = os.environ.get(
@@ -258,9 +259,10 @@ def test_add_no_params(app):
 
 @pytest.fixture(scope='function')
 def auth_req(request):
+    manager = BCRYPTPasswordManager()
     settings = {
         'auth.username': 'admin',
-        'auth.password': 'secret',
+        'auth.password': manager.encode('secret'),
     }
     testing.setUp(settings=settings)
     req = testing.DummyRequest()
