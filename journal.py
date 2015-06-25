@@ -7,23 +7,27 @@ from waitress import serve
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
-# sessionmaker is a factory that makes factories
-#   Session = sessionmaker(bind=engine)
-#     recall that Session is a class being defined as a sessionmaker class
-#     but where the bind is equal to the engine variable that should be defined
-#     elsewhere; the engine is the connection, the Session is the cursor.
-#   session = Session()
-#     actually starts a session
-# scoped_session is similar to that process above, only a scoped session helps to
-# maintain the association of one session with one request, even when there are
-# many many requests happening all at once.
+"""
+sessionmaker is a factory that makes factories
+  Session = sessionmaker(bind=engine)
+    recall that Session is a class being defined as a sessionmaker
+    class but where the bind is equal to the engine variable that
+    should be defined elsewhere; the engine is the connection, the
+    Session is the cursor.
+  session = Session()
+    actually starts a session
+scoped_session is similar to that process above, only a scoped
+session helps to maintain the association of one session with one
+request, even when there are many many requests happening all at once.
+"""
 from sqlalchemy.orm import sessionmaker, scoped_session
 from zope.sqlalchemy import ZopeTransactionExtension
 
-
-# bind a symbol, available to all the code in the project, at the module scope which
-# will be responsible creating session for each request. it is the point of access
-# to the database.
+"""
+bind a symbol, available to all the code in the project, at the
+module scope which will be responsible creating session for each
+request. it is the point of access to the database.
+"""
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
 
@@ -31,7 +35,6 @@ Base = declarative_base()
 
 
 class Entry(Base):
-
     __tablename__ = "entries"
 
     @classmethod
@@ -44,14 +47,20 @@ class Entry(Base):
 
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     title = sa.Column(sa.Unicode(255), nullable=False)
-    created = sa.Column(sa.DateTime, nullable=False, default=datetime.datetime.utcnow)
+    created = sa.Column(
+        sa.DateTime, nullable=False, default=datetime.datetime.utcnow
+    )
     text = sa.Column(sa.UnicodeText, nullable=False)
 
     def __repr__(self):
-        return "<Entry(title='%s', creation_date='%s')>" % (self.title, self.creation_date)
+        return "<Entry(title='{}', creation_date='{}')>".format(
+            self.title, self.creation_date
+        )
 
-
-# make a module-level constant for the connection URI (you'll need it elsewhere):
+"""
+make a module-level constant for the connection URI
+(you'll need it elsewhere):
+"""
 DATABASE_URL = os.environ.get(
     'DATABASE_URL',
     'postgresql://tanner@localhost:5432/learning-journal'
@@ -59,25 +68,31 @@ DATABASE_URL = os.environ.get(
 
 
 def init_db():
-
     engine = sa.create_engine(DATABASE_URL, echo=True)
-
     Base.metadata.create_all(engine)
 
 
-from pyramid.httpexceptions import HTTPNotFound
+# from pyramid.httpexceptions import HTTPNotFound
+
 
 @view_config(route_name='home', renderer='templates/test.jinja2')
 def home(request):
-    # .set_trace() inserts a break point. shell will break into a pdb prompt
-#    import pdb; pdb.set_trace()
-#    return "Hello World"
+    """
+    .set_trace() inserts a break point. shell will break into a pdb
+    prompt
+    """
+    #   import pdb; pdb.set_trace()
+    #   return "Hello World"
     return {'one': 'two', 'stuff': ['a', 'b', 'c']}
+
 
 @view_config(route_name='other', renderer='string')
 def other(request):
+    # linter's griping at me about multiple statements on one line,
+    # but I think I'm going to let this one ride because Cris did it
     import pdb; pdb.set_trace()
     return request.matchdict
+
 
 def main():
     """Create a configured wsgi app"""
@@ -95,7 +110,7 @@ def main():
     )
     # we want to use the transaction management provided by pyramid-tm
     config.include("pyramid_jinja2")
-    #config.include("pyramid_tm")
+    # config.include("pyramid_tm")
     config.add_route('home', '/')
     config.add_route('other', '/other/{special_val}')
     config.scan()
