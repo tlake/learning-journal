@@ -186,3 +186,38 @@ def test_listing(app, entry):
     for field in ['title', 'text']:
         expected = getattr(entry, field, 'absent')
         assert expected in actual
+
+
+"""
+    Below:
+
+    use app fixture because we want to ensure that we have an
+    application to work with.
+
+    'post' method sends an 'HTTP POST' request to provided URL.
+
+    'params' arg represents for input data. IRL, user would have
+    entered data into HTML <form> elements.
+
+    'status' arg asserts that the HTTP status code of the response
+    matches. Here, we're looking for a 'redirect' response because we're
+    expecting the browser to be redirected to a different page once the
+    user submits their information.
+ """
+
+
+def test_post_to_add_view(app):
+    entry_data = {
+        'title': 'Hello there',
+        'text': 'This is a post.'
+    }
+    response = app.post('/add', params=entry_data, status='3*')
+    redirected = response.follow()
+    actual = redirected.body
+    for expected in entry_data.values():
+        assert expected in actual
+
+
+def test_add_no_params(app):
+    response = app.post('/add', status=500)
+    assert 'IntegrityError' in response.body
