@@ -308,7 +308,7 @@ def test_do_login_missing_params(auth_req):
             do_login(auth_req)
 
 
-INPUT_BTN = '<input type="submit" value="Share" name="Share"/>'
+INPUT_BTN = '<input id="submit" type="submit" value="Done!" name="Done!"/>'
 
 
 def login_helper(username, password, app):
