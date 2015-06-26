@@ -1,0 +1,12 @@
+{% extends "base.jinja2" %}
+{% block section %}
+  {% if request.authenticated_userid %}
+    <form action="{{ request.route_url('add') }}" method="POST" class="add_entry">
+      <p>Entry Title:</p>
+      <input id="title" type="text" name="title">
+      <p>Entry Content:</p>
+      <textarea name="text"></textarea>
+      <input id="submit" type="submit" value="Done!" name="Done!"/>
+    </form>
+  {% endif %}
+{% endblock %}
