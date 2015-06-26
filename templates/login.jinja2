@@ -1,9 +1,9 @@
 {% extends "base.jinja2" %}
-{% block body %}
+{% block section %}
   <h2>Login</h2>
-  {% if error -%}
+  {% if error %}
   <p class="error"><strong>Error</strong>: {{ error }}
-  {%- endif %}
+  {% endif %}
   <form action="{{ request.route_url('login') }}" method="POST">
     <div class="field">
       <label for="username">Username</label>
