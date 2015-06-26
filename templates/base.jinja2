@@ -1,11 +1,15 @@
+<!--
+
 <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <title>Python Learning Journal</title>
-    <!--[if lt IE 9]>
+    COMMENTED
+    [if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+    <![endif]
+    END COMMENTED
     <link href="/static/style.css" rel="stylesheet" type="text/css">
   </head>
   <body>
@@ -35,3 +39,54 @@
       <p>Created in the Code Fellows Python Dev Accelerator</p>
     </footer>
   </body>
+</html>
+
+-->
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>TLake's Python Learning Journal</title>
+    <!--[if lt IE 9]>
+    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link href='http://fonts.googleapis.com/css?family=Overlock:400,700|Philosopher:400,700' rel='stylesheet' type='text/css'>
+    <link href="static/css/style.css" rel="stylesheet" type="text/css">
+    <meta name="viewport" content="width=device-width">
+  </head>
+  <body>
+    <header>
+      <aside id='user-controls'>
+        <ul>
+        {% if not request.authenticated_userid %}
+          <li><a href="{{ request.route_url('login') }}">log in</a></li>
+        {% else %}
+          <li><a href="{{ request.route_url('logout') }}">log out</a></li>
+        {% endif %}
+        </ul>
+      </aside>
+        <h1>Learning Journal</h1>
+        <h2>Code Fellows: Python Development Accelerator</h2>
+        <h3>Seattle, Summer 2015</h3>
+        <h4>- a project by tanner lake -</h4>
+    </header>
+    <nav>
+        <ul>
+          <li><a href="/">Home</a></li>
+          {% if request.authenticated_userid %}
+          <li><a href="{{ request.route_url('new_entry') }}">New Entry</a></li>
+          {% endif %}
+        </ul>
+    </nav>
+    <section>
+        {% block section %}
+        {% endblock %}
+    </section>
+    <footer>
+        <p>&copy; 2015 Tanner Lake</p>
+    </footer>
+  </body>
+</html>
