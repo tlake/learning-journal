@@ -1,0 +1,355 @@
+/********************************
+General Styling
+********************************/
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  text-align: center;
+  max-width: 100%;
+  background-image: linear-gradient(rgba(144,0,32,0.4), rgba(144,0,32,0.4)),
+                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                    url('../img/leather.jpg');
+  background-size: 500px;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+
+
+/********************************
+Header
+********************************/
+
+header {
+  font-family: 'Philosopher', sans-serif;
+  color: #bbb;
+  text-shadow: 0px 1px #fff,
+               0px -1px #111;
+  max-width: 100%;
+  margin: 2.5% 2.5% 0;
+  padding: 0 5%;
+  background-image: linear-gradient(rgba(144,0,32,0.4), rgba(144,0,32,0.4)),
+                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                    url('../img/leather.jpg');
+  background-size: 500px;
+  border-top: 3px dashed #E6C200;
+  border-left: 3px dashed #E6C200;
+  border-right: 3px dashed #E6C200;
+  border-radius: 10px 10px 0 0;
+}
+
+header h1 {
+  font-size: 2.5rem;
+  margin: 0;
+  padding-top: 30px;
+}
+
+header h2,
+header h3 {
+  font-size: 1.2rem;
+}
+
+header h4 {
+  font-size: 0.9rem;
+  margin: 0;
+  padding: 20px 0 40px;
+}
+
+
+
+/********************************
+Nav
+********************************/
+
+nav {
+  font-family: 'Philosopher', sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  height: 126px;
+  font-size: 1rem;
+  background-color: #fbf4da;
+  /* the shadow cast by the top leather onto the paper below: */
+  background-image: linear-gradient(rgba(0,0,0,0.6), transparent 15px);
+}
+
+nav ul {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+}
+
+nav li {
+  display: inline-block;
+  margin: 0;
+  padding: 0px;
+}
+
+nav a {
+  width: 100px;
+  margin: 0 10px;
+  padding: 30px 10px 15px;
+  display: block;
+  font-weight: 700;
+  color: gold;
+  background-color: #104E8B;
+  border-radius: 0 0 5px 5px;
+  /* the shadow cast by the top leather onto the tabs below: */
+  background-image: linear-gradient(rgba(0,0,0,0.4), transparent 10px);
+  /* the shadow cast by the tabs onto the paper below: */
+  box-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+}
+
+nav .current-page  {
+  padding-bottom: 25px;
+  color: gold;
+  background-color: #800020;
+}
+
+
+
+/********************************
+Main Content
+********************************/
+section {
+  font-family: 'Overlock', sans-serif;
+  text-align: left;
+  max-width: 100%;
+  margin: -1px 0 0;
+  padding: 20px 40px;
+  color: #555;
+  background-color: #FBF4DA;
+  /* the shadow cast by the bottom leather onto the paper above: */
+  background-image: linear-gradient(to top, rgba(0,0,0,0.4), transparent 10px);
+}
+
+#toc li {
+  margin: 20px 0;
+}
+
+#toc a {
+  max-width: 100%;
+  padding: 10px;
+  display: block;
+  font-size: 1.5rem;
+  border-radius: 10px;
+}
+
+#toc a:visited {
+  color: #555;
+}
+
+#toc a:hover {
+  background-color: #FEFCF4;
+}
+
+
+
+/********************************
+Footer
+********************************/
+
+footer {
+  margin: 0 2.5% 2.5%;
+  font-family: 'Philosopher', sans-serif;
+  color: #bbb;
+  text-shadow: 0px 1px #fff,
+               0px -1px #111;
+  position: relative;
+  z-index: 1;
+  border-bottom: 3px dashed #E6C200;
+  border-left: 3px dashed #E6C200;
+  border-right: 3px dashed #E6C200;
+  border-radius: 0 0 10px 10px ;
+}
+
+footer p {
+  margin: 0;
+  padding: 20px 0;
+}
+
+
+
+/********************************
+PAGE: DETAIL
+********************************/
+
+.entry-header {
+  text-align: center;
+}
+
+a.edit {
+  text-align: left;
+  display: inline-block;
+  font-size: 1rem;
+  border-radius: 0 5px 5px 0;
+  padding: 15px 15px 15px 60px;
+  margin: 0 0 10px -50px;
+  font-weight: 700;
+  color: gold;
+  background-color: #104E8B;
+  /* the shadow cast by the tab onto the paper below: */
+  box-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+}
+
+.textwall {
+  text-align: justify;
+  padding: 20px 10;
+}
+
+
+
+/********************************
+PAGE: NEW ENTRY
+********************************/
+
+form {
+  text-align: center;
+  margin-top: -30px;
+  padding: 0 10px 10px;
+}
+
+input {
+  font-family: 'Overlock', sans-serif;
+  font-size: 1.2rem;
+  color: #555;
+  border: none;
+}
+
+input:focus {
+    outline: none;
+}
+
+#title {
+  width: 60%;
+}
+
+textarea {
+  font-family: 'Overlock', sans-serif;
+  font-size: 1.2rem;
+  color: #555;
+  width: 80%;
+  height: 10rem;
+  border: none;
+}
+
+textarea:focus {
+    outline: none;
+}
+
+#submit {
+  display: block;
+  width: 100px;
+  margin: 50px auto -30px;
+  padding: 15px 10px 30px;
+  display: block;
+  font-weight: 700;
+  color: #800020;
+  background-color: #ffd700;
+  border-radius: 5px 5px 0 0;
+  /* the shadow cast by the bottom leather onto the tab below: */
+  background-image: linear-gradient(to top, rgba(0,0,0,0.4), transparent 5px);
+  /* the shadow cast by the tab onto the paper below: */
+  box-shadow: 0 0px 2px 1px rgba(0,0,0,0.6);
+}
+
+
+
+/********************************
+RESPONSIVE
+********************************/
+
+@media screen and (min-width: 760px) {
+
+  /* General -------------------------------- */
+
+  
+  /* Header -------------------------------- */
+  
+  header {
+    text-shadow: none;
+    text-shadow: 0px 1px #fff,
+                 0px 2px 1px #fff,
+                 0px -1px #111;
+  }
+
+  header h1 {
+    font-size: 3rem;
+  }
+  
+  header h2,
+  header h3 {
+    font-size: 1.4rem;
+  }
+  
+  header h4 {
+    font-size: rem;
+  }
+
+  
+  /* Nav -------------------------------- */
+
+  nav a {
+    width: 150px;
+    font-size: 1.5rem;
+    padding-bottom: 25px;
+  }
+
+  nav .current-page {
+    padding-bottom: 35px;
+  }
+
+  
+  /* Content -------------------------------- */
+  
+  #toc {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+
+  
+  /* Footer -------------------------------- */
+
+  
+  /* Page: Detail -------------------------------- */
+  
+  .entry-header {
+    text-align: justify;
+    padding-left: 10%;
+  }
+
+  a.edit {
+    font-size: 1.5rem;
+  }
+  
+  .textwall {
+    padding-left: 10%;
+    padding-right: 10%;
+    font-size: 1.3rem;
+  }
+
+  #submit {
+    width: 150px;
+    font-size: 1.5rem;
+
+  
+  /* Page: New Entry -------------------------------- */
+
+  
+}
+  
+  
