@@ -308,7 +308,7 @@ def test_do_login_missing_params(auth_req):
             do_login(auth_req)
 
 
-INPUT_BTN = '<input id="submit" type="submit" value="Done!" name="Done!"/>'
+NEW_ENTRY_BTN = 'New Entry</a>'
 
 
 def login_helper(username, password, app):
@@ -323,7 +323,7 @@ def login_helper(username, password, app):
 def test_start_as_anonymous(app):
     response = app.get('/', status=200)
     actual = response.body
-    assert INPUT_BTN not in actual
+    assert NEW_ENTRY_BTN not in actual
 
 
 def test_login_success(app):
@@ -333,7 +333,7 @@ def test_login_success(app):
     response = redirect.follow()
     assert response.status_code == 200
     actual = response.body
-    assert INPUT_BTN in actual
+    assert NEW_ENTRY_BTN in actual
 
 
 def test_login_fails(app):
@@ -342,7 +342,7 @@ def test_login_fails(app):
     assert response.status_code == 200
     actual = response.body
     assert "Login Failed" in actual
-    assert INPUT_BTN not in actual
+    assert NEW_ENTRY_BTN not in actual
 
 
 def test_logout(app):
@@ -352,4 +352,4 @@ def test_logout(app):
     response = redirect.follow()
     assert response.status_code == 200
     actual = response.body
-    assert INPUT_BTN not in actual
+    assert NEW_ENTRY_BTN not in actual

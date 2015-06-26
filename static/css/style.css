@@ -69,6 +69,16 @@ header h4 {
   padding: 20px 0 40px;
 }
 
+#user-controls a,
+#user-controls a:visited {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 5px 15px;
+  border-radius: 3px;
+  background-color: #bbb;
+  color: #111;
+}
+
 
 
 /********************************
@@ -251,7 +261,7 @@ textarea:focus {
     outline: none;
 }
 
-#submit {
+.bottom-tab-btn {
   display: block;
   width: 100px;
   margin: 50px auto -30px;
@@ -268,7 +278,6 @@ textarea:focus {
 }
 
 
-
 /********************************
 RESPONSIVE
 ********************************/
@@ -277,9 +286,9 @@ RESPONSIVE
 
   /* General -------------------------------- */
 
-  
+
   /* Header -------------------------------- */
-  
+
   header {
     text-shadow: none;
     text-shadow: 0px 1px #fff,
@@ -290,17 +299,17 @@ RESPONSIVE
   header h1 {
     font-size: 3rem;
   }
-  
+
   header h2,
   header h3 {
     font-size: 1.4rem;
   }
-  
+
   header h4 {
     font-size: rem;
   }
 
-  
+
   /* Nav -------------------------------- */
 
   nav a {
@@ -313,20 +322,20 @@ RESPONSIVE
     padding-bottom: 35px;
   }
 
-  
+
   /* Content -------------------------------- */
-  
+
   #toc {
     padding-left: 10%;
     padding-right: 10%;
   }
 
-  
+
   /* Footer -------------------------------- */
 
-  
+
   /* Page: Detail -------------------------------- */
-  
+
   .entry-header {
     text-align: justify;
     padding-left: 10%;
@@ -335,21 +344,20 @@ RESPONSIVE
   a.edit {
     font-size: 1.5rem;
   }
-  
+
   .textwall {
     padding-left: 10%;
     padding-right: 10%;
     font-size: 1.3rem;
   }
 
-  #submit {
+  .bottom-tab-btn {
     width: 150px;
     font-size: 1.5rem;
 
-  
+
   /* Page: New Entry -------------------------------- */
 
-  
+
 }
-  
-  
+

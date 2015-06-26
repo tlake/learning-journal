@@ -1,50 +1,3 @@
-<!--
-
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>Python Learning Journal</title>
-    COMMENTED
-    [if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]
-    END COMMENTED
-    <link href="/static/style.css" rel="stylesheet" type="text/css">
-  </head>
-  <body>
-    <header>
-      <aside id='user-controls'>
-        <ul>
-        {% if not request.authenticated_userid %}
-          <li><a href="{{ request.route_url('login') }}">log in</a></li>
-        {% else %}
-          <li><a href="{{ request.route_url('logout') }}">log out</a></li>
-        {% endif %}
-        </ul>
-      </aside>
-      <nav>
-        <ul>
-          <li><a href="/">Home</a></li>
-        </ul>
-      </nav>
-    </header>
-    <main>
-      <h1>My Python Journal</h1>
-      <section id="content">
-      {% block body %}{% endblock %}
-      </section>
-    </main>
-    <footer>
-      <p>Created in the Code Fellows Python Dev Accelerator</p>
-    </footer>
-  </body>
-</html>
-
--->
-
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -59,6 +12,7 @@
   </head>
   <body>
     <header>
+      {% block log_btn %}
       <aside id='user-controls'>
         <ul>
         {% if not request.authenticated_userid %}
@@ -68,6 +22,7 @@
         {% endif %}
         </ul>
       </aside>
+      {% endblock %}
         <h1>Learning Journal</h1>
         <h2>Code Fellows: Python Development Accelerator</h2>
         <h3>Seattle, Summer 2015</h3>
