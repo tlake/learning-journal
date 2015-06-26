@@ -103,6 +103,14 @@ def list_view(request):
     return {'entries': entries}
 
 
+@view_config(route_name='new_entry', renderer='templates/new_entry.jinja2')
+def new_entry(request):
+    return {}
+    # Turns out you need return *something*, even if that something
+    # is just an empty dict. It's expecting a dict, but it doesn't
+    # need to contain anything useful.
+
+
 """
     Below:
 
@@ -153,7 +161,7 @@ def do_login(request):
     return False
 
 
-@ view_config(route_name='login', renderer='templates/login.jinja2')
+@view_config(route_name='login', renderer='templates/login.jinja2')
 def login(request):
     username = request.params.get('username', '')
     error = ''
@@ -212,6 +220,7 @@ def main():
     config.add_route('add', '/add')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
+    config.add_route('new_entry', '/new_entry')
     config.add_route('other', '/other/{special_val}')
     config.scan()
     app = config.make_wsgi_app()
