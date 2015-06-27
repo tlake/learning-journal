@@ -6,6 +6,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import IntegrityError
 from pyramid import testing
 from cryptacular.bcrypt import BCRYPTPasswordManager
+from bs4 import BeautifulSoup
 
 
 TEST_DATABASE_URL = os.environ.get(
@@ -308,9 +309,6 @@ def test_do_login_missing_params(auth_req):
             do_login(auth_req)
 
 
-INPUT_BTN = '<input type="submit" value="Share" name="Share"/>'
-
-
 def login_helper(username, password, app):
     """encapsulate app login for reuse in tests
 
@@ -323,7 +321,8 @@ def login_helper(username, password, app):
 def test_start_as_anonymous(app):
     response = app.get('/', status=200)
     actual = response.body
-    assert INPUT_BTN not in actual
+    soup = BeautifulSoup(actual)
+    assert not soup.find(id='new-entry-btn')
 
 
 def test_login_success(app):
@@ -333,7 +332,8 @@ def test_login_success(app):
     response = redirect.follow()
     assert response.status_code == 200
     actual = response.body
-    assert INPUT_BTN in actual
+    soup = BeautifulSoup(actual)
+    assert soup.find(id='new-entry-btn')
 
 
 def test_login_fails(app):
@@ -342,7 +342,8 @@ def test_login_fails(app):
     assert response.status_code == 200
     actual = response.body
     assert "Login Failed" in actual
-    assert INPUT_BTN not in actual
+    soup = BeautifulSoup(actual)
+    assert not soup.find(id='new-entry-btn')
 
 
 def test_logout(app):
@@ -352,4 +353,21 @@ def test_logout(app):
     response = redirect.follow()
     assert response.status_code == 200
     actual = response.body
-    assert INPUT_BTN not in actual
+    soup = BeautifulSoup(actual)
+    assert not soup.find(id='new-entry-btn')
+
+
+def test_new_entry_page_exists(app):
+    test_login_success(app)
+    response = app.get('/new_entry', status=200)
+    actual = response.body
+    soup = BeautifulSoup(actual)
+    assert soup.find(id='post-entry-btn')
+    assert soup.find('form')
+
+
+def test_no_new_entry_if_unauthn(app):
+    response = app.get('/new_entry', status=200)
+    actual = response.body
+    soup = BeautifulSoup(actual)
+    assert not soup.find('form')
