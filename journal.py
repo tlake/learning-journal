@@ -48,6 +48,13 @@ Base = declarative_base()
 class Entry(Base):
     __tablename__ = "entries"
 
+    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
+    title = sa.Column(sa.Unicode(255), nullable=False)
+    text = sa.Column(sa.UnicodeText, nullable=False)
+    created = sa.Column(
+        sa.DateTime, nullable=False, default=datetime.datetime.utcnow
+    )
+
     @classmethod
     def all(cls, session=None):
         if session is None:
@@ -61,13 +68,6 @@ class Entry(Base):
         instance = cls(title=title, text=text)
         session.add(instance)
         return instance
-
-    id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
-    title = sa.Column(sa.Unicode(255), nullable=False)
-    created = sa.Column(
-        sa.DateTime, nullable=False, default=datetime.datetime.utcnow
-    )
-    text = sa.Column(sa.UnicodeText, nullable=False)
 
     def __repr__(self):
         return "<Entry(title='{}', creation_date='{}')>".format(
@@ -119,12 +119,12 @@ def list_view(request):
     return {'entries': entries}
 
 
-@view_config(route_name='new_entry', renderer='templates/new_entry.jinja2')
-def new_entry(request):
-    return {}
-    # Turns out you need return *something*, even if that something
-    # is just an empty dict. The renderer is expecting a dict, but it
-    # doesn't need to contain anything useful.
+# @view_config(route_name='new_entry', renderer='templates/new_entry.jinja2')
+# def new_entry(request):
+#     return {}
+#     # Turns out you need return *something*, even if that something
+#     # is just an empty dict. The renderer is expecting a dict, but it
+#     # doesn't need to contain anything useful.
 
 
 """
@@ -145,12 +145,17 @@ def new_entry(request):
 """
 
 
-@view_config(route_name='add', request_method='POST')
+@view_config(route_name='add_entry', renderer='templates/add_entry.jinja2')
 def add_entry(request):
-    title = request.params.get('title')
-    text = request.params.get('text')
-    Entry.write(title=title, text=text)
-    return HTTPFound(request.route_url('home'))
+    if request.method == 'POST':
+        title = request.params.get('title')
+        text = request.params.get('text')
+        if title is not None and text is not None:
+            Entry.write(title=title, text=text)
+            return HTTPFound(request.route_url('home'))
+    else:
+        entry = Entry()
+        return {'entry': entry}
 
 
 @view_config(context=DBAPIError)
@@ -220,7 +225,7 @@ def main():
     config.add_route('add', '/add')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
-    config.add_route('new_entry', '/new_entry')
+    config.add_route('add_entry', '/add_entry')
     config.add_route('other', '/other/{special_val}')
     config.scan()
     app = config.make_wsgi_app()
