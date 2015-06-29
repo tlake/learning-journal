@@ -89,6 +89,22 @@ def init_db():
     Base.metadata.create_all(engine)
 
 
+def do_login(request):
+    username = request.params.get('username', None)
+    password = request.params.get('password', None)
+    if not (username and password):
+        raise ValueError('both username and password are required')
+
+    settings = request.registry.settings
+    # you can always get hold of application settings with
+    # `request.registry.settings`
+    manager = BCRYPTPasswordManager()
+    if username == settings.get('auth.username', ''):
+        hashed = settings.get('auth.password', '')
+        return manager.check(hashed, password)
+    return False
+
+
 # from pyramid.httpexceptions import HTTPNotFound
 
 
@@ -107,8 +123,8 @@ def list_view(request):
 def new_entry(request):
     return {}
     # Turns out you need return *something*, even if that something
-    # is just an empty dict. It's expecting a dict, but it doesn't
-    # need to contain anything useful.
+    # is just an empty dict. The renderer is expecting a dict, but it
+    # doesn't need to contain anything useful.
 
 
 """
@@ -143,22 +159,6 @@ def db_exception(context, request):
     response = Response(context.message)
     response.status_int = 500
     return response
-
-
-def do_login(request):
-    username = request.params.get('username', None)
-    password = request.params.get('password', None)
-    if not (username and password):
-        raise ValueError('both username and password are required')
-
-    settings = request.registry.settings
-    # you can always get hold of application settings with
-    # `request.registry.settings`
-    manager = BCRYPTPasswordManager()
-    if username == settings.get('auth.username', ''):
-        hashed = settings.get('auth.password', '')
-        return manager.check(hashed, password)
-    return False
 
 
 @view_config(route_name='login', renderer='templates/login.jinja2')
