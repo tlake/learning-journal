@@ -7,19 +7,18 @@ from waitress import serve
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
-"""
-sessionmaker is a factory that makes factories
-  Session = sessionmaker(bind=engine)
-    recall that Session is a class being defined as a sessionmaker
-    class but where the bind is equal to the engine variable that
-    should be defined elsewhere; the engine is the connection, the
-    Session is the cursor.
-  session = Session()
-    actually starts a session
-scoped_session is similar to that process above, only a scoped
-session helps to maintain the association of one session with one
-request, even when there are many many requests happening all at once.
-"""
+
+# sessionmaker is a factory that makes factories
+#   Session = sessionmaker(bind=engine)
+#     recall that Session is a class being defined as a sessionmaker
+#     class but where the bind is equal to the engine variable that
+#     should be defined elsewhere; the engine is the connection, the
+#     Session is the cursor.
+#   session = Session()
+#     actually starts a session
+# scoped_session is similar to that process above, only a scoped
+# session helps to maintain the association of one session with one
+# request, even when there are many many requests happening all at once.
 from sqlalchemy.orm import sessionmaker, scoped_session
 from zope.sqlalchemy import ZopeTransactionExtension
 from pyramid.httpexceptions import HTTPFound
@@ -28,18 +27,24 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from cryptacular.bcrypt import BCRYPTPasswordManager
 from pyramid.security import remember, forget
+# from pyramid.httpexceptions import HTTPNotFound
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
 
-"""
-bind a symbol, available to all the code in the project, at the
-module scope which will be responsible creating session for each
-request. it is the point of access to the database.
-"""
-
+# bind a symbol, available to all the code in the project, at the
+# module scope which will be responsible creating session for each
+# request. it is the point of access to the database.
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
+
+
+# make a module-level constant for the connection URI
+# (you'll need it elsewhere):
+DATABASE_URL = os.environ.get(
+    'DATABASE_URL',
+    'postgresql://tanner@localhost:5432/learning-journal',
+)
 
 
 Base = declarative_base()
@@ -74,15 +79,6 @@ class Entry(Base):
             self.title, self.creation_date
         )
 
-"""
-make a module-level constant for the connection URI
-(you'll need it elsewhere):
-"""
-DATABASE_URL = os.environ.get(
-    'DATABASE_URL',
-    'postgresql://tanner@localhost:5432/learning-journal',
-)
-
 
 def init_db():
     engine = sa.create_engine(DATABASE_URL, echo=True)
@@ -105,9 +101,6 @@ def do_login(request):
     return False
 
 
-# from pyramid.httpexceptions import HTTPNotFound
-
-
 @view_config(route_name='other', renderer='string')
 def other(request):
     return request.matchdict
@@ -119,32 +112,18 @@ def list_view(request):
     return {'entries': entries}
 
 
-# @view_config(route_name='new_entry', renderer='templates/new_entry.jinja2')
-# def new_entry(request):
-#     return {}
-#     # Turns out you need return *something*, even if that something
-#     # is just an empty dict. The renderer is expecting a dict, but it
-#     # doesn't need to contain anything useful.
+# Below:
+# Add a view function that will:
+#     Pass values from the 'request' to our 'Entry.write()' method
 
+#     Handle any exceptions raised by 'Entry.write()' appropriately,
+#     returning a useful HTTP response
 
-"""
-    Below:
+#     Send the viewer back to the home page if the entry was
+#     successfully written
 
-    Add a view function that will:
-
-        Pass values from the 'request' to our 'Entry.write()' method
-
-        Handle any exceptions raised by 'Entry.write()' appropriately,
-        returning a useful HTTP response
-
-        Send the viewer back to the home page if the entry was
-        successfully written
-
-    (We'll also need to configure a 'route' that will connect to
-    this new 'view function' --> 'config.add_route('add', '/add')' )
-"""
-
-
+# (We'll also need to configure a 'route' that will connect to
+# this new 'view function' --> 'config.add_route('add', '/add')' )
 @view_config(route_name='add_entry', renderer='templates/add_entry.jinja2')
 def add_entry(request):
     if request.method == 'POST':
@@ -192,7 +171,7 @@ def logout(request):
 
 
 def main():
-    """Create a configured wsgi app"""
+    # Create a configured wsgi app
     settings = {}
     debug = os.environ.get('DEBUG', True)
     settings['reload_all'] = debug
@@ -206,8 +185,10 @@ def main():
         # only bind the session if it isn't already bound, while testing
         engine = sa.create_engine(DATABASE_URL)
         DBSession.configure(bind=engine)
+
     # add a secret value for auth tkt signing
     auth_secret = os.environ.get('JOURNAL_AUTH_SECRET', 'itsaseekrit')
+
     # and add a new value to the constructor for our Configurator:
     config = Configurator(
         settings=settings,
@@ -217,6 +198,7 @@ def main():
         ),
         authorization_policy=ACLAuthorizationPolicy(),
     )
+
     # we want to use the transaction management provided by pyramid-tm
     config.include("pyramid_tm")
     config.include("pyramid_jinja2")
