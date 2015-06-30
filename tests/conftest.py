@@ -107,3 +107,9 @@ def app(db_session):
     # """ main is just a factory that builds and returns configured
     # wsgi apps """
     return TestApp(app)
+
+
+@pytest.fixture()
+def homepage(app):
+    response = app.get('/')
+    return response
