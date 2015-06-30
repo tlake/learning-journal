@@ -126,15 +126,19 @@ def list_view(request):
 # this new 'view function' --> 'config.add_route('add', '/add')' )
 @view_config(route_name='add_entry', renderer='templates/add_entry.jinja2')
 def add_entry(request):
+    title, text = ['', '']
     if request.method == 'POST':
         title = request.params.get('title')
         text = request.params.get('text')
-        if title is not None and text is not None:
+        import pdb; pdb.set_trace()
+        if title != '' and text != '':
             Entry.write(title=title, text=text)
             return HTTPFound(request.route_url('home'))
     else:
-        entry = Entry()
-        return {'entry': entry}
+        return {
+            'title': title,
+            'text': text
+        }
 
 
 @view_config(context=DBAPIError)
@@ -204,7 +208,6 @@ def main():
     config.include("pyramid_jinja2")
     config.add_static_view('static', os.path.join(HERE, 'static'))
     config.add_route('home', '/')
-    config.add_route('add', '/add')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('add_entry', '/add_entry')
