@@ -29,6 +29,7 @@ from cryptacular.bcrypt import BCRYPTPasswordManager
 from pyramid.security import remember, forget
 # from pyramid.httpexceptions import HTTPNotFound
 
+USR = os.environ.get("USER", )
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -43,7 +44,7 @@ DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 # (you'll need it elsewhere):
 DATABASE_URL = os.environ.get(
     'DATABASE_URL',
-    'postgresql://tanner@localhost:5432/learning-journal',
+    'postgresql://' + USR + '@localhost:5432/learning-journal',
 )
 
 

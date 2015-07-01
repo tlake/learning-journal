@@ -9,9 +9,12 @@ from cryptacular.bcrypt import BCRYPTPasswordManager
 from bs4 import BeautifulSoup
 
 
+USR = os.environ.get("USER", )
+
+
 TEST_DATABASE_URL = os.environ.get(
     'DATABASE_URL',
-    'postgresql://tanner@localhost:5432/test-learning-journal'
+    'postgresql://' + USR + '@localhost:5432/travis_ci_test'
 )
 os.environ['DATABASE_URL'] = TEST_DATABASE_URL
 os.environ['TESTING'] = 'True'
