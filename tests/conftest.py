@@ -5,9 +5,12 @@ from sqlalchemy import create_engine
 import journal
 
 
+DB_USR = os.environ.get("USER", )
+
+
 TEST_DATABASE_URL = os.environ.get(
     'DATABASE_URL',
-    'postgresql://tanner@localhost:5432/test-learning-journal'
+    'postgresql://' + DB_USR + '@localhost:5432/test-learning-journal'
 )
 os.environ['DATABASE_URL'] = TEST_DATABASE_URL
 os.environ['TESTING'] = 'True'
