@@ -4,9 +4,9 @@
   {% if request.authenticated_userid %}
     <form action="{{ request.route_url('add_entry') }}" method="POST" class="add_entry">
       <p>Entry Title:</p>
-      <input id="title" type="text" name="title">
+      <input id="title" type="text" name="title" value="{{ title }}">
       <p>Entry Content:</p>
-      <textarea name="text"></textarea>
+      <textarea name="text">{{ text }}</textarea>
       <input id="post-entry-btn" class="bottom-tab-btn" type="submit" value="Done!" name="Done!"/>
     </form>
   {% endif %}
