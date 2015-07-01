@@ -39,3 +39,58 @@ def check_entry_list(homepage):
     html = homepage.html
     entries = html.find_all('article', class_='entry')
     assert len(entries) == 3
+
+
+# Given an anonymous user
+# Given a list of three entry headings
+# When the user visits the homepage
+# Then they see a list of three entry headings
+
+
+# As an author I want to have a permalink for each journal entry where
+# I can view it in detail.
+    # Given an authenticated user
+    # Given a list of three entry headings
+    # When the user clicks on a heading
+    # Then they see a detailed view of that entry
+
+
+# !! OPTIONAL !!
+# I want that same functionality as anonymous, too:
+    # Given an anonymous user
+    # Given a list of three entry headings
+    # When the user clicks on a heading
+    # Then they see a detailed view of that entry
+
+
+# As an author I want to edit my journal entries so I can fix errors.
+    # Given an authenticated user
+    # Given a detail view of an entry
+    # When the user navigates to the detail view
+    # Then they see an edit button
+
+
+# !! OPTIONAL !!
+# It follows, then, that an unauthenticated user should NOT be
+# able to edit an entry
+    # Given an anonymous user
+    # Given a detail view of an entry
+    # When the user navigates to the detail view
+    # Then they DO NOT see an edit button
+
+
+# As an author I want to use MarkDown to create and edit my entries so
+# that I can format them nicely.
+    # Given an authenticated user
+    # Given a journal entry to edit
+    # When they type using MarkDown
+    # Then the entry will display as desired
+
+
+# As an author I want to see colorized code samples in my journal
+# entries so that I can more easily understand them.
+    # Given an authenticated user
+    # Given an entry
+    # When the user navigates to the detail view of that entry
+    # Then parts of that entry that have been formatted as code will
+    # be colorized in their display.
