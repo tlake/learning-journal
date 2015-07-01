@@ -112,21 +112,8 @@ def list_view(request):
     return {'entries': entries}
 
 
-# Below:
-# Add a view function that will:
-#     Pass values from the 'request' to our 'Entry.write()' method
-
-#     Handle any exceptions raised by 'Entry.write()' appropriately,
-#     returning a useful HTTP response
-
-#     Send the viewer back to the home page if the entry was
-#     successfully written
-
-# (We'll also need to configure a 'route' that will connect to
-# this new 'view function' --> 'config.add_route('add', '/add')' )
 @view_config(route_name='add_entry', renderer='templates/add_entry.jinja2')
-def add_entry(request):
-    title, text = ['', '']
+def add_entry(request, title='', text=''):
     if request.method == 'POST':
         title = request.params.get('title')
         text = request.params.get('text')
@@ -134,11 +121,8 @@ def add_entry(request):
         if title != '' and text != '':
             Entry.write(title=title, text=text)
             return HTTPFound(request.route_url('home'))
-    else:
-        return {
-            'title': title,
-            'text': text
-        }
+
+    return {'title': title, 'text': text}
 
 
 @view_config(context=DBAPIError)
