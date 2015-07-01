@@ -357,7 +357,7 @@ def test_logout(app):
     assert not soup.find(id='new-entry-btn')
 
 
-def test_new_entry_page_exists(app):
+def test_add_entry_page_exists(app):
     test_login_success(app)
     response = app.get('/add_entry', status=200)
     actual = response.body
@@ -366,8 +366,38 @@ def test_new_entry_page_exists(app):
     assert soup.find('form')
 
 
-def test_no_new_entry_if_unauthn(app):
+def test_no_add_entry_if_unauthn(app):
     response = app.get('/add_entry', status=200)
     actual = response.body
     soup = BeautifulSoup(actual)
     assert not soup.find('form')
+
+
+def test_add_entry_title_repopulates_on_partial_submit(app):
+    test_login_success(app)
+    title = 'title words here'
+    text = ''
+    response = app.post('/add_entry', {'title': title, 'text': text})
+    soup = response.html
+    assert soup.find(id='entry-title')['value'] == title
+
+
+def test_add_entry_text_repopulates_on_partial_submit(app):
+    test_login_success(app)
+    title = ''
+    text = "entry's body text goes here"
+    response = app.post('/add_entry', {'title': title, 'text': text})
+    soup = response.html
+    assert soup.find(id='entry-text').text == text
+
+
+def test_add_entry_success(app):
+    test_login_success(app)
+    title = "The Title of the Entry"
+    text = "The body of the entry"
+    submit = app.post("/add_entry", {"title": title, "text": text})
+    assert submit.status_code == 302
+    response = submit.follow()
+    assert response.status_code == 200
+    soup = response.html
+    assert soup.find(class_="entry-header").text == title
