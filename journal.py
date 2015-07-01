@@ -130,7 +130,7 @@ def add_entry(request):
     if request.method == 'POST':
         title = request.params.get('title')
         text = request.params.get('text')
-        import pdb; pdb.set_trace()
+        # import pdb; pdb.set_trace()
         if title != '' and text != '':
             Entry.write(title=title, text=text)
             return HTTPFound(request.route_url('home'))

@@ -230,7 +230,7 @@ def test_post_to_add_view(app):
         'title': 'Hello there',
         'text': 'This is a post.',
     }
-    response = app.post('/add', params=entry_data, status='3*')
+    response = app.post('/add_entry', params=entry_data, status='3*')
     redirected = response.follow()
     actual = redirected.body
     for expected in entry_data.values():
@@ -238,7 +238,7 @@ def test_post_to_add_view(app):
 
 
 def test_add_no_params(app):
-    response = app.post('/add', status=500)
+    response = app.post('/add_entry', status=500)
     assert 'IntegrityError' in response.body
 
 
@@ -359,7 +359,7 @@ def test_logout(app):
 
 def test_new_entry_page_exists(app):
     test_login_success(app)
-    response = app.get('/new_entry', status=200)
+    response = app.get('/add_entry', status=200)
     actual = response.body
     soup = BeautifulSoup(actual)
     assert soup.find(id='post-entry-btn')
@@ -367,7 +367,7 @@ def test_new_entry_page_exists(app):
 
 
 def test_no_new_entry_if_unauthn(app):
-    response = app.get('/new_entry', status=200)
+    response = app.get('/add_entry', status=200)
     actual = response.body
     soup = BeautifulSoup(actual)
     assert not soup.find('form')
