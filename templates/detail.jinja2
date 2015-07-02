@@ -1,0 +1,9 @@
+{% extends "base.jinja2" %}
+{% block section %}
+        <h1 class="entry-header">Entry The Nth</h1>
+        <h2 class="entry-header">June 00</h2>
+        {% if request.authenticated_userid %}
+        <a class="edit" href="edit_entry.html">Edit This Entry</a>
+        {% endif %}
+        <p class="textwall">Lorem</p>
+{% endblock %}

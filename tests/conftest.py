@@ -115,12 +115,6 @@ def app(db_session):
     return TestApp(app)
 
 
-@pytest.fixture()
-def homepage(app):
-    response = app.get('/')
-    return response
-
-
 """
     Below:
 
@@ -164,3 +158,9 @@ def entry(db_session):
     )
     db_session.flush()
     return entry
+
+
+@pytest.fixture()
+def homepage(app):
+    response = app.get('/')
+    return response

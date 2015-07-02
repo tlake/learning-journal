@@ -193,6 +193,7 @@ def main():
     config.include("pyramid_jinja2")
     config.add_static_view('static', os.path.join(HERE, 'static'))
     config.add_route('home', '/')
+    config.add_route('detail', '/detail')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
     config.add_route('add_entry', '/add_entry')

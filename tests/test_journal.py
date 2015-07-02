@@ -94,10 +94,10 @@ def test_empty_listing(app):
 def test_listing(app, entry):
     response = app.get('/')
     assert response.status_code == 200
-    actual = response.body
-    for field in ['title', 'text']:
+    returned_body = response.body
+    for field in ['title']:
         expected = getattr(entry, field, 'absent')
-        assert expected in actual
+        assert expected in returned_body
 
 
 """
@@ -125,9 +125,8 @@ def test_post_to_add_view(app):
     }
     response = app.post('/add_entry', params=entry_data, status='3*')
     redirected = response.follow()
-    actual = redirected.body
-    for expected in entry_data.values():
-        assert expected in actual
+    returned_body = redirected.body
+    assert entry_data['title'] in returned_body
 
 
 def test_add_no_params(app):
@@ -169,8 +168,8 @@ def test_do_login_missing_params(auth_req):
 
 
 def login_helper(username, password, app):
-    """encapsulate app login for reuse in tests
-
+    """
+    Encapsulate app login for reuse in tests
     Accept all status codes so that we can make assertions in tests
     """
     login_data = {'username': username, 'password': password}
@@ -259,4 +258,5 @@ def test_add_entry_success(app):
     response = submit.follow()
     assert response.status_code == 200
     soup = response.html
-    assert soup.find(class_="entry-header").text == title
+    soup_link = soup.find(class_='entry-link')
+    assert title in soup_link.find('a').text

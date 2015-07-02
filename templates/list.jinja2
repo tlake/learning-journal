@@ -1,16 +1,12 @@
 {% extends "base.jinja2" %}
 {% block section %}
+  <ul id="toc">
   {% for entry in entries %}
-    <article class="entry" id="entry={{entry.id}}">
-      <h1 class="entry-header">{{ entry.title }}</h1>
-      <h2 class="entry-header">{{ entry.created.strftime('%b. %d, %Y') }}</h2>
-      <p class="textwall">
-        {{ entry.text|safe }}
-      </p>
-    </article>
+    <li class="entry-link"><a href="{{ request.route_url('detail') }}">
+      {{ entry.created.strftime('%b, %d, %Y') }}: {{ entry.title }}
+    </a></li>
   {% else %}
-  <article class="entry">
-    <h1 class="entry-header">No entries here so far</h1>
-  </article>
+  <li>No entries here so far</li>
+  </ul>
   {% endfor %}
 {% endblock %}
