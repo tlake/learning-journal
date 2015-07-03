@@ -2,7 +2,7 @@
 
 {% block section %}
   {% if request.authenticated_userid %}
-    <form action="{{ request.route_url('add_entry') }}" method="POST" class="add_entry">
+    <form action="{{ request.route_url('edit_entry') }}" method="POST" class="edit_entry">
       <p>Entry Title:</p>
       <input id="entry-title" type="text" name="title" value="{{ title }}" />
       <p>Entry Content:</p>
