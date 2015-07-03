@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import os
+
 from pyramid.config import Configurator
 from pyramid.view import view_config
 from waitress import serve
+
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
 import datetime
@@ -75,6 +77,15 @@ class Entry(Base):
         session.add(instance)
         return instance
 
+    @classmethod
+    def fetch(cls, entry_id=None, title=None, text=None, session=None):
+        if session is None:
+            session = DBSession
+        instance = session.query(cls).filter(cls.id == entry_id).one()
+        instance.title = title
+        instance.text = text
+        return instance
+
     def __repr__(self):
         return "<Entry(title='{}', creation_date='{}')>".format(
             self.title, self.creation_date
@@ -102,19 +113,14 @@ def do_login(request):
     return False
 
 
-@view_config(route_name='other', renderer='string')
-def other(request):
-    return request.matchdict
-
-
 @view_config(route_name='home', renderer='templates/list.jinja2')
 def list_view(request):
     entries = Entry.all()
     return {'entries': entries}
 
 
-@view_config(route_name='add_entry', renderer='templates/add_entry.jinja2')
-def add_entry(request, title='', text=''):
+@view_config(route_name='edit_entry', renderer='templates/edit_entry.jinja2')
+def edit_entry(request, title='', text=''):
     if request.method == 'POST':
         title = request.params.get('title')
         text = request.params.get('text')
@@ -196,7 +202,7 @@ def main():
     config.add_route('detail', '/detail')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
-    config.add_route('add_entry', '/add_entry')
+    config.add_route('edit_entry', '/edit_entry')
     config.add_route('other', '/other/{special_val}')
     config.scan()
     app = config.make_wsgi_app()
