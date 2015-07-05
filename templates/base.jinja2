@@ -32,7 +32,7 @@
         <ul>
           <li><a href="/">Home</a></li>
           {% if request.authenticated_userid %}
-          <li><a id="edit-entry-btn" href="{{ request.route_url('edit_entry') }}">New Entry</a></li>
+          <li><a id="edit-entry-btn" href="{{ request.route_url('edit_entry', entry_id='new') }}">New Entry</a></li>
           {% endif %}
         </ul>
     </nav>
