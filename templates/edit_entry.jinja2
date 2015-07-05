@@ -2,11 +2,11 @@
 
 {% block section %}
   {% if request.authenticated_userid %}
-    <form action="{{ request.route_url('edit_entry') }}" method="POST" class="edit_entry">
+    <form class="edit_entry" action="{{ request.route_url('edit_entry, entry_id=entry.id') }}" method="POST">
       <p>Entry Title:</p>
-      <input id="entry-title" type="text" name="title" value="{{ title }}" />
+      <input id="entry-title" type="text" name="title" value="{{ entry.title }}" />
       <p>Entry Content:</p>
-      <textarea id="entry-text" name="text">{{ text }}</textarea>
+      <textarea id="entry-text" name="text">{{ entry.text }}</textarea>
       <input id="post-entry-btn" class="bottom-tab-btn" type="submit" value="Done!" name="Done!"/>
     </form>
   {% endif %}
