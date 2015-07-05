@@ -56,6 +56,11 @@ Base = declarative_base()
 class Entry(Base):
     __tablename__ = "entries"
 
+    def __repr__(self):
+        return "<Entry(title='{}', created='{}')>".format(
+            self.title, self.created
+        )
+
     id = sa.Column(sa.Integer, primary_key=True, autoincrement=True)
     title = sa.Column(sa.Unicode(255), nullable=False)
     text = sa.Column(sa.UnicodeText, nullable=False)
@@ -78,18 +83,11 @@ class Entry(Base):
         return instance
 
     @classmethod
-    def fetch(cls, entry_id=None, title=None, text=None, session=None):
+    def fetch(cls, entry_id=None, session=None):
         if session is None:
             session = DBSession
         instance = session.query(cls).filter(cls.id == entry_id).one()
-        instance.title = title
-        instance.text = text
         return instance
-
-    def __repr__(self):
-        return "<Entry(title='{}', creation_date='{}')>".format(
-            self.title, self.creation_date
-        )
 
 
 def init_db():
@@ -119,17 +117,56 @@ def list_view(request):
     return {'entries': entries}
 
 
+@view_config(route_name='detail', renderer='templates/detail.jinja2')
+def detail_view(request):
+    entry = Entry.fetch(request.matchdict['id'])
+    return {
+        "entry": {
+            "id": entry.id,
+            "title": entry.title,
+            "text": entry.text,
+            "created": entry.created
+        }
+    }
+
+
 @view_config(route_name='edit_entry', renderer='templates/edit_entry.jinja2')
-def edit_entry(request, title='', text=''):
-    if request.method == 'POST':
+def edit_entry(request, title='', text='', entry_id='new'):
+    # There are three ways to get to the edit page:
+    # (1): Modifying an existing entry
+    if entry_id != 'new':
+        entry = Entry.fetch(request.matchdict['entry_id'])
+        return {
+            'entry': {
+                'id': entry.id,
+                'title': entry.title,
+                'text': entry.text
+            }
+        }
+    # (2): Redirect from incomplete submission
+    elif request.method == 'POST':
         title = request.params.get('title')
         text = request.params.get('text')
-        # import pdb; pdb.set_trace()
         if title != '' and text != '':
             Entry.write(title=title, text=text)
             return HTTPFound(request.route_url('home'))
-
-    return {'title': title, 'text': text}
+        else:
+            return {
+                'entry': {
+                    'id': entry_id,
+                    'title': title,
+                    'text': text
+                }
+            }
+    # (3): Creating a brand new entry
+    else:
+        return {
+            'entry': {
+                'id': entry_id,
+                'title': title,
+                'text': text
+            }
+        }
 
 
 @view_config(context=DBAPIError)
@@ -199,11 +236,10 @@ def main():
     config.include("pyramid_jinja2")
     config.add_static_view('static', os.path.join(HERE, 'static'))
     config.add_route('home', '/')
-    config.add_route('detail', '/detail')
+    config.add_route('detail', '/detail/{id}')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
-    config.add_route('edit_entry', '/edit_entry')
-    config.add_route('other', '/other/{special_val}')
+    config.add_route('edit_entry', '/edit_entry/{entry_id}')
     config.scan()
     app = config.make_wsgi_app()
     return app
