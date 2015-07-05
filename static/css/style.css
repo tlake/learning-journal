@@ -11,8 +11,7 @@ body {
   text-align: center;
   max-width: 100%;
   background-image: linear-gradient(rgba(144,0,32,0.4), rgba(144,0,32,0.4)),
-                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
                     url('../img/leather.jpg');
   background-size: 500px;
 }
@@ -42,8 +41,7 @@ header {
   margin: 2.5% 2.5% 0;
   padding: 0 5%;
   background-image: linear-gradient(rgba(144,0,32,0.4), rgba(144,0,32,0.4)),
-                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
-                    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+                    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
                     url('../img/leather.jpg');
   background-size: 500px;
   border-top: 3px dashed #E6C200;
@@ -115,7 +113,7 @@ nav a {
   padding: 30px 10px 15px;
   display: block;
   font-weight: 700;
-  color: gold;
+  color: #FFD700;
   background-color: #104E8B;
   border-radius: 0 0 5px 5px;
   /* the shadow cast by the top leather onto the tabs below: */
@@ -126,7 +124,7 @@ nav a {
 
 nav .current-page  {
   padding-bottom: 25px;
-  color: gold;
+  color: #FFD700;
   background-color: #800020;
 }
 
@@ -154,6 +152,7 @@ section {
 #toc a {
   max-width: 100%;
   padding: 10px;
+  color: #555;
   display: block;
   font-size: 1.5rem;
   border-radius: 10px;
@@ -210,7 +209,7 @@ a.edit {
   padding: 15px 15px 15px 60px;
   margin: 0 0 10px -50px;
   font-weight: 700;
-  color: gold;
+  color: #FFD700;
   background-color: #104E8B;
   /* the shadow cast by the tab onto the paper below: */
   box-shadow: 2px 2px 3px rgba(0,0,0,0.6);
