@@ -3,7 +3,7 @@
   <ul id="toc">
   {% for entry in entries %}
     <li class="entry-link">
-      <a href="{{ request.route_url('detail', entry_id=entry.id) }}">
+      <a href="{{ request.route_url('detail', id=entry.id) }}">
       {{ entry.created.strftime('%b, %d, %Y') }}: {{ entry.title }}
       </a>
     </li>
