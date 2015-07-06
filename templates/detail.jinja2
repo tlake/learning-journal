@@ -3,7 +3,8 @@
         <h1 class="entry-header">{{ entry.title }}</h1>
         <h2 class="entry-header">{{ entry.created.strftime('%b. %d, %Y') }}</h2>
         {% if request.authenticated_userid %}
-        <a class="edit" href="{{ request.route_url('edit_entry', entry_id=entry.id) }}">Edit This Entry</a>
+        <a class="edit" href="{{ request.route_url('edit', entry_id=entry.id) }}">Edit This Entry</a>
+        <p>Entry ID: {{ entry.id }}</p>
         {% endif %}
         <p class="textwall">{{ entry.text | safe }}</p>
 {% endblock %}

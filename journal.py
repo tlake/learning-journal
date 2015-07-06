@@ -163,43 +163,54 @@ def detail_view(request):
     }
 
 
-@view_config(route_name='edit_entry', renderer='templates/edit_entry.jinja2')
-def edit_entry(request, title='', text='', entry_id='new'):
+@view_config(route_name="create", renderer="templates/edit.jinja2")
+@view_config(route_name='edit', renderer='templates/edit.jinja2')
+def edit_entry(request):
     # There are three ways to get to the edit page:
-    # (1): Modifying an existing entry
-    if entry_id != 'new':
-        entry = Entry.fetch(request.matchdict['entry_id'])
-        return {
+    # (1): Creating a brand new entry
+    # (previous location: home)
+    if request.params.get('entry.id') is None:
+        to_render = {}
+
+    # (2): Redirect from incomplete submission
+    # (previous location: edit_entry)
+    # This is also where POSTing a valid entry happens.
+    elif request.method == 'POST':
+        title = request.params.get('title')
+        text = request.params.get('text')
+
+        # If the entry is valid (not missing a title or a text),
+        # go ahead and write that shit
+        if title != '' and text != '':
+            Entry.write(title=title, text=text)
+            to_render = HTTPFound(request.route_url('home'))
+
+        # If it's not valid, we'll re-enter this view with whatever
+        # information the user's already written, and we'll populate
+        # the form fields with that data.
+        else:
+            to_render = {
+                'entry': {
+                    # 'id': entry_id,
+                    'title': title,
+                    'text': text
+                }
+            }
+
+    # (3): Modifying an existing entry
+    # (previous location: detail)
+    else:
+        id_to_match = request.params.get('id')
+        entry = Entry.fetch(request.matchdict[id_to_match])
+        to_render = {
             'entry': {
                 'id': entry.id,
                 'title': entry.title,
                 'text': entry.text
             }
         }
-    # (2): Redirect from incomplete submission
-    elif request.method == 'POST':
-        title = request.params.get('title')
-        text = request.params.get('text')
-        if title != '' and text != '':
-            Entry.write(title=title, text=text)
-            return HTTPFound(request.route_url('home'))
-        else:
-            return {
-                'entry': {
-                    'id': entry_id,
-                    'title': title,
-                    'text': text
-                }
-            }
-    # (3): Creating a brand new entry
-    else:
-        return {
-            'entry': {
-                'id': entry_id,
-                'title': title,
-                'text': text
-            }
-        }
+
+    return to_render
 
 
 def main():
@@ -239,7 +250,8 @@ def main():
     config.add_route('detail', '/detail/{id}')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
-    config.add_route('edit_entry', '/edit_entry/{entry_id}')
+    config.add_route('edit', '/edit/{entry_id}')
+    config.add_route('create', '/create')
     config.scan()
     app = config.make_wsgi_app()
     return app
