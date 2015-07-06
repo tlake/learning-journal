@@ -111,6 +111,39 @@ def do_login(request):
     return False
 
 
+@view_config(context=DBAPIError)
+def db_exception(context, request):
+    from pyramid.response import Response
+    response = Response(context.message)
+    response.status_int = 500
+    return response
+
+
+@view_config(route_name='login', renderer='templates/login.jinja2')
+def login(request):
+    username = request.params.get('username', '')
+    error = ''
+    if request.method == 'POST':
+        error = 'Login Failed'
+        authenticated = False
+        try:
+            authenticated = do_login(request)
+        except ValueError as e:
+            error = str(e)
+
+        if authenticated:
+            headers = remember(request, username)
+            return HTTPFound(request.route_url('home'), headers=headers)
+
+    return {'error': error, 'username': username}
+
+
+@view_config(route_name='logout')
+def logout(request):
+    headers = forget(request)
+    return HTTPFound(request.route_url('home'), headers=headers)
+
+
 @view_config(route_name='home', renderer='templates/list.jinja2')
 def list_view(request):
     entries = Entry.all()
@@ -167,39 +200,6 @@ def edit_entry(request, title='', text='', entry_id='new'):
                 'text': text
             }
         }
-
-
-@view_config(context=DBAPIError)
-def db_exception(context, request):
-    from pyramid.response import Response
-    response = Response(context.message)
-    response.status_int = 500
-    return response
-
-
-@view_config(route_name='login', renderer='templates/login.jinja2')
-def login(request):
-    username = request.params.get('username', '')
-    error = ''
-    if request.method == 'POST':
-        error = 'Login Failed'
-        authenticated = False
-        try:
-            authenticated = do_login(request)
-        except ValueError as e:
-            error = str(e)
-
-        if authenticated:
-            headers = remember(request, username)
-            return HTTPFound(request.route_url('home'), headers=headers)
-
-    return {'error': error, 'username': username}
-
-
-@view_config(route_name='logout')
-def logout(request):
-    headers = forget(request)
-    return HTTPFound(request.route_url('home'), headers=headers)
 
 
 def main():
