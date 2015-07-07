@@ -29,7 +29,13 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from cryptacular.bcrypt import BCRYPTPasswordManager
 from pyramid.security import remember, forget
-# from pyramid.httpexceptions import HTTPNotFound
+
+import re
+
+from markdown import markdown
+from pygments import highlight
+from pygments.lexers.python import PythonLexer
+from pygments.formatters.html import HtmlFormatter
 
 DB_USR = os.environ.get("USER", )
 
@@ -83,10 +89,16 @@ class Entry(Base):
         return instance
 
     @classmethod
-    def fetch(cls, entry_id=None, session=None):
+    def one(cls, eid=None, session=None):
         if session is None:
             session = DBSession
-        instance = session.query(cls).filter(cls.id == entry_id).one()
+        return session.query(cls).filter(cls.id == eid).one()
+
+    @classmethod
+    def modify(cls, eid=None, title=None, text=None):
+        instance = cls.one(eid)
+        instance.title = title
+        instance.text = text
         return instance
 
 
@@ -152,12 +164,20 @@ def list_view(request):
 
 @view_config(route_name='detail', renderer='templates/detail.jinja2')
 def detail_view(request):
-    entry = Entry.fetch(request.matchdict['id'])
+    entry = Entry.one(request.matchdict['id'])
+    html_text = markdown(entry.text, output_format='html5')
+
+    def highlighting(matchobj):
+        return highlight(matchobj.group(0), PythonLexer(), HtmlFormatter())
+
+    pattern = r'(?<=<code>)[\s\S]*(?=<\/code>)'
+    html_text = re.sub(pattern, highlighting, html_text)
+
     return {
         "entry": {
             "id": entry.id,
             "title": entry.title,
-            "text": entry.text,
+            "text": html_text,
             "created": entry.created
         }
     }
@@ -165,17 +185,28 @@ def detail_view(request):
 
 @view_config(route_name="create", renderer="templates/edit.jinja2")
 @view_config(route_name='edit', renderer='templates/edit.jinja2')
-def edit_entry(request):
+def edit_view(request):
     # There are three ways to get to the edit page:
     # (1): Creating a brand new entry
     # (previous location: home)
-    if request.params.get('entry.id') is None:
-        to_render = {}
+    import pdb; pdb.set_trace()
+    if request.matchdict['entry_id'] is None:
+        to_render = {
+            'entry': {
+                'id': 'new',
+                'title': '',
+                'text': ''
+            }
+        }
 
     # (2): Redirect from incomplete submission
     # (previous location: edit_entry)
     # This is also where POSTing a valid entry happens.
     elif request.method == 'POST':
+        try:
+            get_id = request.matchdict['id']
+        except:
+            get_id = 'new'
         title = request.params.get('title')
         text = request.params.get('text')
 
@@ -191,7 +222,7 @@ def edit_entry(request):
         else:
             to_render = {
                 'entry': {
-                    # 'id': entry_id,
+                    'id': get_id,
                     'title': title,
                     'text': text
                 }
@@ -200,11 +231,11 @@ def edit_entry(request):
     # (3): Modifying an existing entry
     # (previous location: detail)
     else:
-        id_to_match = request.params.get('id')
-        entry = Entry.fetch(request.matchdict[id_to_match])
+        id_to_match = request.matchdict['entry_id']
+        entry = Entry.one(id_to_match)
         to_render = {
             'entry': {
-                'id': entry.id,
+                'id': id_to_match,
                 'title': entry.title,
                 'text': entry.text
             }
