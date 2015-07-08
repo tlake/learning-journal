@@ -89,14 +89,14 @@ class Entry(Base):
         return instance
 
     @classmethod
-    def one(cls, eid=None, session=None):
+    def one(cls, entry_id=None, session=None):
         if session is None:
             session = DBSession
-        return session.query(cls).filter(cls.id == eid).one()
+        return session.query(cls).filter(cls.id == entry_id).one()
 
     @classmethod
-    def modify(cls, eid=None, title=None, text=None):
-        instance = cls.one(eid)
+    def modify(cls, entry_id=None, title=None, text=None):
+        instance = cls.one(entry_id)
         instance.title = title
         instance.text = text
         return instance
@@ -186,11 +186,11 @@ def detail_view(request):
 @view_config(route_name="create", renderer="templates/edit.jinja2")
 @view_config(route_name='edit', renderer='templates/edit.jinja2')
 def edit_view(request):
+    # import pdb; pdb.set_trace()
     # There are three ways to get to the edit page:
     # (1): Creating a brand new entry
     # (previous location: home)
-    import pdb; pdb.set_trace()
-    if request.matchdict['entry_id'] is None:
+    if len(request.matchdict) == 0:
         to_render = {
             'entry': {
                 'id': 'new',
@@ -201,28 +201,26 @@ def edit_view(request):
 
     # (2): Redirect from incomplete submission
     # (previous location: edit_entry)
-    # This is also where POSTing a valid entry happens.
+    # This is also where POSTing a valid entry happens, and where
+    # invalid entries are handled
     elif request.method == 'POST':
-        try:
-            get_id = request.matchdict['id']
-        except:
-            get_id = 'new'
+        entry_id = request.matchdict['entry_id']
         title = request.params.get('title')
         text = request.params.get('text')
 
-        # If the entry is valid (not missing a title or a text),
-        # go ahead and write that shit
         if title != '' and text != '':
-            Entry.write(title=title, text=text)
+            if entry_id == 'new':
+                Entry.write(title=title, text=text)
+
+            else:
+                Entry.modify(entry_id=entry_id, title=title, text=text)
+
             to_render = HTTPFound(request.route_url('home'))
 
-        # If it's not valid, we'll re-enter this view with whatever
-        # information the user's already written, and we'll populate
-        # the form fields with that data.
         else:
             to_render = {
                 'entry': {
-                    'id': get_id,
+                    'id': entry_id,
                     'title': title,
                     'text': text
                 }
