@@ -211,11 +211,12 @@ def edit_view(request):
         if title != '' and text != '':
             if entry_id == 'new':
                 Entry.write(title=title, text=text)
+                to_render = HTTPFound(request.route_url('home'))
 
             else:
                 Entry.modify(entry_id=entry_id, title=title, text=text)
+                to_render = HTTPFound(request.route_url('detail', id=entry_id))
 
-            to_render = HTTPFound(request.route_url('home'))
 
         else:
             to_render = {
