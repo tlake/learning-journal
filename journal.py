@@ -37,7 +37,7 @@ from pygments import highlight
 from pygments.lexers.python import PythonLexer
 from pygments.formatters.html import HtmlFormatter
 
-DB_USR = os.environ.get("USER", )
+DB_USR = os.environ.get(b"USER", )
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
@@ -51,8 +51,8 @@ DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 # make a module-level constant for the connection URI
 # (you'll need it elsewhere):
 DATABASE_URL = os.environ.get(
-    'DATABASE_URL',
-    'postgresql://' + DB_USR + '@localhost:5432/learning-journal',
+    b'DATABASE_URL',
+    b'postgresql://' + str(DB_USR) + b'@localhost:5432/learning-journal',
 )
 
 
@@ -216,7 +216,6 @@ def edit_view(request):
             else:
                 Entry.modify(entry_id=entry_id, title=title, text=text)
                 to_render = HTTPFound(request.route_url('detail', id=entry_id))
-
 
         else:
             to_render = {
