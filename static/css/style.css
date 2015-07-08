@@ -199,6 +199,7 @@ PAGE: DETAIL
 
 .entry-header {
   text-align: center;
+  margin-left: 5%;
 }
 
 a.edit {
@@ -206,7 +207,7 @@ a.edit {
   display: inline-block;
   font-size: 1rem;
   border-radius: 0 5px 5px 0;
-  padding: 15px 15px 15px 60px;
+  padding: 15px 15px 15px 10%;
   margin: 0 0 10px -50px;
   font-weight: 700;
   color: #FFD700;
@@ -215,9 +216,11 @@ a.edit {
   box-shadow: 2px 2px 3px rgba(0,0,0,0.6);
 }
 
-.textwall {
+.entry-text {
   text-align: justify;
-  padding: 20px 10;
+  display: block;
+  font-size: 1.4rem;
+  margin: 0px 10%;
 }
 
 
