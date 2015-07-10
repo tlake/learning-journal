@@ -8,23 +8,13 @@ from waitress import serve
 
 import sqlalchemy as sa
 from sqlalchemy.ext.declarative import declarative_base
-import datetime
-
-# sessionmaker is a factory that makes factories
-#   Session = sessionmaker(bind=engine)
-#     recall that Session is a class being defined as a sessionmaker
-#     class but where the bind is equal to the engine variable that
-#     should be defined elsewhere; the engine is the connection, the
-#     Session is the cursor.
-#   session = Session()
-#     actually starts a session
-# scoped_session is similar to that process above, only a scoped
-# session helps to maintain the association of one session with one
-# request, even when there are many many requests happening all at once.
 from sqlalchemy.orm import sessionmaker, scoped_session
 from zope.sqlalchemy import ZopeTransactionExtension
-from pyramid.httpexceptions import HTTPFound
 from sqlalchemy.exc import DBAPIError
+
+import datetime
+
+from pyramid.httpexceptions import HTTPFound
 from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from cryptacular.bcrypt import BCRYPTPasswordManager
@@ -37,24 +27,15 @@ from pygments import highlight
 from pygments.lexers.python import PythonLexer
 from pygments.formatters.html import HtmlFormatter
 
-DB_USR = os.environ.get(b"USER", )
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-
-
-# bind a symbol, available to all the code in the project, at the
-# module scope which will be responsible creating session for each
-# request. it is the point of access to the database.
+DB_USR = os.environ.get(b"USER", )
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
-
-# make a module-level constant for the connection URI
-# (you'll need it elsewhere):
 DATABASE_URL = os.environ.get(
     b'DATABASE_URL',
     b'postgresql://' + str(DB_USR) + b'@localhost:5432/learning-journal',
 )
-
 
 Base = declarative_base()
 
@@ -103,12 +84,31 @@ class Entry(Base):
 
     @property
     def mkdwn(self):
-        return markdown(
+
+        # def highlighting(matchobj):
+        #     return highlight(
+        #         # matchobj,
+        #         matchobj.group(0),
+        #         PythonLexer(),
+        #         HtmlFormatter()
+        #     )
+
+        md = markdown(
             self.text,
             extensions=[
-                'markdown.extensions.fenced_code'
+                'codehilite',
+                'fenced_code',
             ],
+            output_format='html5',
         )
+
+        return md
+
+        # return highlight(md, PythonLexer(), HtmlFormatter())
+
+        # pattern = r'(?<=<pre>)[\s\S]*(?=<\/pre>)'
+
+        # return re.sub(pattern, highlighting, md)
 
 
 def init_db():
@@ -173,14 +173,7 @@ def list_view(request):
 
 @view_config(route_name='detail', renderer='templates/detail.jinja2')
 def detail_view(request):
-    entry = Entry.one(request.matchdict['id'])  # .mkdwn
-    # html_text = markdown(entry.text, output_format='html5')
-
-    # def highlighting(matchobj):
-    #     return highlight(matchobj.group(0), PythonLexer(), HtmlFormatter())
-
-    # pattern = r'(?<=<code>)[\s\S]*(?=<\/code>)'
-    # html_text = re.sub(pattern, highlighting, html_text)
+    entry = Entry.one(request.matchdict['id'])
 
     return {
         "entry": {
