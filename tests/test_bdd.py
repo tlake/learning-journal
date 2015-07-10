@@ -6,12 +6,6 @@ from pytest_bdd import scenario, given, when, then
 import journal
 
 
-# FEATURES
-
-
-# NEW SCENARIO
-
-
 @scenario('features/homepage.feature',
           'The homepage lists permalinked entries for anon')
 def test_home_listing_as_anon():
