@@ -2,6 +2,7 @@ beautifulsoup4==4.3.2
 cryptacular==1.4.1
 enum34==1.0.4
 glob2==0.4.1
+html5lib==0.999999
 ipython==3.2.0
 Jinja2==2.7.3
 Mako==1.0.1
