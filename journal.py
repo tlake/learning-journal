@@ -20,12 +20,7 @@ from pyramid.authorization import ACLAuthorizationPolicy
 from cryptacular.bcrypt import BCRYPTPasswordManager
 from pyramid.security import remember, forget
 
-import re
-
-from markdown import markdown
-from pygments import highlight
-from pygments.lexers.python import PythonLexer
-from pygments.formatters.html import HtmlFormatter
+import markdown
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -85,15 +80,7 @@ class Entry(Base):
     @property
     def mkdwn(self):
 
-        # def highlighting(matchobj):
-        #     return highlight(
-        #         # matchobj,
-        #         matchobj.group(0),
-        #         PythonLexer(),
-        #         HtmlFormatter()
-        #     )
-
-        md = markdown(
+        md = markdown.markdown(
             self.text,
             extensions=[
                 'codehilite',
@@ -103,12 +90,6 @@ class Entry(Base):
         )
 
         return md
-
-        # return highlight(md, PythonLexer(), HtmlFormatter())
-
-        # pattern = r'(?<=<pre>)[\s\S]*(?=<\/pre>)'
-
-        # return re.sub(pattern, highlighting, md)
 
 
 def init_db():
