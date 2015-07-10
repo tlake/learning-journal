@@ -92,7 +92,7 @@ class Entry(Base):
     def one(cls, entry_id=None, session=None):
         if session is None:
             session = DBSession
-        return session.query(cls).filter(cls.id == entry_id).one()
+        return session.query(cls).get(entry_id)
 
     @classmethod
     def modify(cls, entry_id=None, title=None, text=None):
@@ -100,6 +100,15 @@ class Entry(Base):
         instance.title = title
         instance.text = text
         return instance
+
+    @property
+    def mkdwn(self):
+        return markdown(
+            self.text,
+            extensions=[
+                'markdown.extensions.fenced_code'
+            ],
+        )
 
 
 def init_db():
@@ -164,20 +173,20 @@ def list_view(request):
 
 @view_config(route_name='detail', renderer='templates/detail.jinja2')
 def detail_view(request):
-    entry = Entry.one(request.matchdict['id'])
-    html_text = markdown(entry.text, output_format='html5')
+    entry = Entry.one(request.matchdict['id'])  # .mkdwn
+    # html_text = markdown(entry.text, output_format='html5')
 
-    def highlighting(matchobj):
-        return highlight(matchobj.group(0), PythonLexer(), HtmlFormatter())
+    # def highlighting(matchobj):
+    #     return highlight(matchobj.group(0), PythonLexer(), HtmlFormatter())
 
-    pattern = r'(?<=<code>)[\s\S]*(?=<\/code>)'
-    html_text = re.sub(pattern, highlighting, html_text)
+    # pattern = r'(?<=<code>)[\s\S]*(?=<\/code>)'
+    # html_text = re.sub(pattern, highlighting, html_text)
 
     return {
         "entry": {
             "id": entry.id,
             "title": entry.title,
-            "text": html_text,
+            "text": entry.mkdwn,
             "created": entry.created
         }
     }
