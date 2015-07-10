@@ -112,7 +112,9 @@ def app(db_session):
     app = main()
     # """ main is just a factory that builds and returns configured
     # wsgi apps """
-    return TestApp(app)
+    testapp = TestApp(app)
+    testapp.set_parser_features(['html5'])
+    return testapp
 
 
 """

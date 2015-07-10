@@ -12,13 +12,11 @@ def test_home_listing_as_anon():
     pass
 
 
-# Given an anonymous user
 @given('an anonymous user')
 def an_anonymous_user(app):
     return app
 
 
-# Given a list of three permalinked entries
 @given('a list of three permalinked entries')
 def create_entries(db_session):
     title_template = "Title {}"
@@ -31,18 +29,70 @@ def create_entries(db_session):
         db_session.flush()
 
 
-# When the user visits the homepage
 @when('the user visits the homepage')
 def visit_homepage(homepage):
     pass
 
 
-# Then they see a list of three entry headings
 @then('they see a list of three permalinked entries')
 def check_entry_list(homepage):
     html = homepage.html
     entries = html.find_all('li', class_='entry-link')
     assert len(entries) == 3
+
+
+@scenario('features/detail.feature',
+          'Entries written with MarkDown are formatted for display')
+def test_markdown_displays_as_html():
+    pass
+
+
+@given('an authenticated user')
+def an_authenticated_user(app):
+    response = app.post(
+        '/login',
+        params={'username': 'admin', 'password': 'secret'},
+        status='*'
+    ).follow()
+
+    return {'app': app, 'response': response}
+
+
+@given('a journal entry written using MarkDown syntax')
+def an_entry_with_fenced_code(db_session):
+    title = 'here is some title'
+
+    text = """Let's write some fenced code!
+    ```python
+    Looky here!
+    ```
+    Regulartype now."""
+
+    entry = journal.Entry.write(
+        title=title,
+        text=text,
+        session=db_session)
+
+    db_session.flush()
+
+    return entry
+
+
+@when('they visit the detail view')
+def visit_detail_view(an_authenticated_user, an_entry_with_fenced_code):
+    app = an_authenticated_user['app']
+    entry_id = an_entry_with_fenced_code.id
+    get_url = '/detail/' + str(entry_id)
+    response = app.get(get_url)
+    an_authenticated_user['response'] = response
+
+
+@then('the entry will have converted the MarkDown to HTML')
+def detail_view_shows_new_html(an_authenticated_user):
+    response = an_authenticated_user['response']
+    import pdb; pdb.set_trace()
+    assert response.html.find('code')
+    assert response.html.find('pre')
 
 
 # NEW SCENARIO
