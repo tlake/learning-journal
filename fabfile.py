@@ -254,7 +254,8 @@ def _setup_suite():
 def _deploy():
     # Stop nginx and supervisor
     sudo('service nginx stop')
-    sudo('service supervisor stop')
+    sudo('pkill -f {p}-server')
+    # sudo('service supervisor stop')
 
     # Prepare a datestamp
     from datetime import datetime
@@ -282,7 +283,9 @@ def _deploy():
         p=projname))
 
     # Start up supervisor and nginx
-    sudo('service supervisor start')
+    # sudo('service supervisor start')
+    run("bash -c 'exec -a {p}-server python ~/{p}/{a} &".format(
+        p=projname, a=appname))
     sudo('service nginx start')
 
 
