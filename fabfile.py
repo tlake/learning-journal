@@ -271,7 +271,7 @@ def _deploy():
     # store it in `~/{projname}` directory
     run(
         'git clone http://github.com/{gp} '
-        '-b auto-deploy --single-branch '
+        '-b auto_deploy --single-branch '
         '~/{p}'.format(
             gp=git_path,
             p=projname,
