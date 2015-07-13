@@ -254,7 +254,7 @@ def _setup_suite():
 def _deploy():
     # Stop nginx and supervisor
     sudo('service nginx stop')
-    sudo('pkill -f {p}-server')
+    sudo('pkill -f {p}-server'.format(p=projname))
     # sudo('service supervisor stop')
 
     # Prepare a datestamp
