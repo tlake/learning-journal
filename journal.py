@@ -29,8 +29,13 @@ DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
 DATABASE_URL = os.environ.get(
     b'DATABASE_URL',
-    b'postgresql://' + str(DB_USR) + b'@localhost:5432/learning-journal',
+    b'postgresql:///learning-journal',
 )
+
+# DATABASE_URL = os.environ.get(
+#     b'DATABASE_URL',
+#     b'postgresql://' + str(DB_USR) + b'@localhost:5432/learning-journal',
+# )
 
 Base = declarative_base()
 
