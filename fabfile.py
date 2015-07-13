@@ -25,12 +25,9 @@ def get_ec2_connection():
     return env.ec2
 
 
-def provision_instance(
-    wait_for_running=True,
-    timeout=60,
-    interval=2,
-    name_after_project=False
-):
+def provision_instance(wait_for_running=True, timeout=60,
+                       interval=2, name_after_project=False
+                       ):
     wait_val = int(interval)
     timeout_val = int(timeout)
     conn = get_ec2_connection()
@@ -203,7 +200,8 @@ def name_instance(inst=None):
 def _setup_suite():
     # Update apt, install the stuff we need, and update pip
     sudo('apt-get update')
-    sudo('apt-get install -y nginx git python-pip supervisor')
+    sudo('apt-get install -y '
+         'nginx git python-pip supervisor postgresql postgresql-contrb')
     sudo('pip install --upgrade pip')
 
     # Go ahead and stop supervisord from running; it will be
