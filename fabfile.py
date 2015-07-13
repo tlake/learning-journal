@@ -284,7 +284,7 @@ def _deploy():
 
     # Start up supervisor and nginx
     # sudo('service supervisor start')
-    run("bash -c 'exec -a {p}-server python ~/{p}/{a} &'".format(
+    run("exec -a {p}-server -c nohup python ~/{p}/{a} &".format(
         p=projname, a=appname))
     sudo('service nginx start')
 
