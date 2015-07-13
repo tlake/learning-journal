@@ -25,7 +25,12 @@ def get_ec2_connection():
     return env.ec2
 
 
-def provision_instance(wait_for_running=True, timeout=60, interval=2):
+def provision_instance(
+    wait_for_running=True,
+    timeout=60,
+    interval=2,
+    name_after_project=False
+):
     wait_val = int(interval)
     timeout_val = int(timeout)
     conn = get_ec2_connection()
@@ -41,9 +46,14 @@ def provision_instance(wait_for_running=True, timeout=60, interval=2):
         instance_type=instance_type,
         security_groups=[security_group, ]
     )
+
     new_instances = [
         i for i in reservations.instances if i.state == u'pending'
     ]
+
+    if name_after_project:
+        for i in new_instances:
+            i.tags['Name'] = projname
 
     running_instance = []
     if wait_for_running:
@@ -242,6 +252,10 @@ def _deploy():
             p=projname,
         )
     )
+
+    # Install pip requirements
+    sudo('pip install -r ~/{p}/requirements.txt'.format(
+        p=projname))
 
     # Start up supervisor and nginx
     sudo('service supervisor start')
