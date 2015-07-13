@@ -208,7 +208,7 @@ def _setup_suite():
 
     # Go ahead and stop supervisord from running; it will be
     # restarted everytime we deploy anyway
-    sudo('service stop supervisor')
+    sudo('service supervisor stop')
 
     # If this is a brand new instance, we'll make a copy of the
     # default nginx configuration for backup
