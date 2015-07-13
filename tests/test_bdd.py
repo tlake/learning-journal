@@ -5,12 +5,13 @@ import sys
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
+
 # assert response.html.find('pre')
 # Put ^ that ^ line at the end of detail_view_shows_new_html
-# and remove the sys stuff above here to reduplicate
-# the weird error with the copyright symbol.
+# and remove the sys stuff above here to restore the demon
+# error with the copyright symbol.
 
-# Don't think that you're safe, UnicodeDecoeError
+# Don't think that you're safe, UnicodeDecodeError
 # I'm coming for you still.
 
 import journal
