@@ -201,7 +201,8 @@ def _setup_suite():
     # Update apt, install the stuff we need, and update pip
     sudo('apt-get update')
     sudo('apt-get install -y '
-         'nginx git python-pip supervisor postgresql postgresql-contrb')
+         'python-dev nginx git python-pip supervisor '
+         'postgresql postgresql-contrib libpq-dev')
     sudo('pip install --upgrade pip')
 
     # Go ahead and stop supervisord from running; it will be
