@@ -1,4 +1,4 @@
-from fabric.api import env, prompt, execute, sudo, run, put, append
+from fabric.api import env, prompt, execute, sudo, run, put
 from fabric.contrib import files
 import boto.ec2
 import time
@@ -51,20 +51,27 @@ def provision_instance(
         i for i in reservations.instances if i.state == u'pending'
     ]
 
-    if name_after_project:
-        for i in new_instances:
-            i.tags['Name'] = projname
+    for i in new_instances:
+        if name_after_project:
+            env.ec2.create_tags(i.id, {'Name': projname})
+
+        else:
+            name_instance(inst=i)
 
     running_instance = []
+
     if wait_for_running:
         waited = 0
+
         while new_instances and (waited < timeout_val):
             time.sleep(wait_val)
             waited += int(wait_val)
+
             for instance in new_instances:
                 instance.update()
                 state = instance.state
                 print "Instance %s is %s" % (instance.id, state)
+
                 if state == 'running':
                     running_instance.append(
                         new_instances.pop(new_instances.index(i))
@@ -175,6 +182,24 @@ def terminate_instance():
         terminate_selected_instance()
 
 
+def name_instance(inst=None):
+    if not inst:
+        select_instance()
+        inst = env.active_instance
+
+    prompt_text = "Enter a name for this instance:\n"
+
+    new_name = prompt(prompt_text)
+
+    if new_name == '':
+        new_name = 'None'
+
+    env.ec2.create_tags(
+        inst.id,
+        {'Name': new_name}
+    )
+
+
 def _setup_suite():
     # Update apt, install the stuff we need, and update pip
     sudo('apt-get update')
@@ -216,7 +241,7 @@ def _setup_suite():
     sudo('echo_supervisord_conf > /etc/supervisord.conf')
 
     # Give supervisor the ability to run our app
-    append(
+    files.append(
         '/etc/supervisord.conf',
         '\n[program:{p}]\ncommand=python ~/{p}/{app}'.format(
             p=projname, app=appname),
