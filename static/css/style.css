@@ -26,7 +26,7 @@ a {
   text-decoration: none;
 }
 
-#personal-site a {
+#personal-site {
   text-decoration: none;
   max-width: 100%;
   padding: 10px;
@@ -36,11 +36,11 @@ a {
   border-radius: 10px;
 }
 
-#personal-site a:visited {
+#personal-site:visited {
   color: #555;
 }
 
-#personal-site a:hover {
+#personal-site:hover {
   background-color: #FEFCF4;
 }
 
