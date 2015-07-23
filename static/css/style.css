@@ -27,21 +27,7 @@ a {
 }
 
 #personal-site {
-  text-decoration: none;
-  max-width: 100%;
-  padding: 10px;
-  color: #555;
-  display: block;
-  font-size: 1.5rem;
-  border-radius: 10px;
-}
-
-#personal-site:visited {
-  color: #555;
-}
-
-#personal-site:hover {
-  background-color: #FEFCF4;
+  text-decoration: underline;
 }
 
 
