@@ -4,7 +4,9 @@
         <h2 class="entry-header">{{ entry.created.strftime('%b. %d, %Y') }}</h2>
 
         {% if request.authenticated_userid %}
-        <a class="edit" href="{{ request.route_url('edit', entry_id=entry.id) }}">Edit This Entry</a>
+        <div class="edit-btn">
+            <a class="edit-btn" href="{{ request.route_url('edit', entry_id=entry.id) }}">Edit This Entry</a>
+        </div>
         {% endif %}
 
         <span class='entry-text'>
