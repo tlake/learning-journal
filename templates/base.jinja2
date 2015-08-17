@@ -3,9 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <title>TLake's Python Learning Journal</title>
-    <!--[if lt IE 9]>
-    <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
     <link href='http://fonts.googleapis.com/css?family=Overlock:400,700|Philosopher:400,700' rel='stylesheet' type='text/css'>
     <link href="/static/css/style.css" rel="stylesheet" type="text/css">
     <link href="/static/css/codehilite.css" rel="stylesheet" type="text/css">
@@ -31,9 +28,9 @@
     </header>
     <nav>
         <ul>
-          <li><a href="/">Home</a></li>
+          <li><a class='nav-link' href="/">Home</a></li>
           {% if request.authenticated_userid %}
-          <li><a id="new-entry-btn" href="{{ request.route_url('create', entry_id='new') }}">New Entry</a></li>
+          <li><a class='nav-link' id="new-entry-btn" href="{{ request.route_url('create', entry_id='new') }}">New Entry</a></li>
           {% endif %}
         </ul>
     </nav>

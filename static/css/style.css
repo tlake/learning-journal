@@ -26,8 +26,9 @@ a {
   text-decoration: none;
 }
 
-#personal-site {
-  text-decoration: underline;
+a:-webkit-any-link {
+  color: inherit;
+  text-decoration: inherit;
 }
 
 
@@ -38,15 +39,12 @@ Header
 
 header {
   font-family: 'Philosopher', sans-serif;
-  color: #bbb;
-  text-shadow: 0px 1px #fff,
+  color: #aaa;
+  text-shadow:
                0px -1px #111;
   max-width: 100%;
   margin: 2.5% 2.5% 0;
   padding: 0 5%;
-  background-image: linear-gradient(rgba(144,0,32,0.4), rgba(144,0,32,0.4)),
-                    linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
-                    url('../img/leather.jpg');
   background-size: 500px;
   border-top: 3px dashed #E6C200;
   border-left: 3px dashed #E6C200;
@@ -77,8 +75,13 @@ header h4 {
   margin-top: 20px;
   padding: 5px 15px;
   border-radius: 3px;
-  background-color: #bbb;
+  background-color: #aaa;
   color: #111;
+}
+
+#personal-site,
+#personal-site:visited {
+  color: #eee;
 }
 
 
@@ -107,23 +110,27 @@ nav ul {
 
 nav li {
   display: inline-block;
-  margin: 0;
-  padding: 0px;
-}
-
-nav a {
-  width: 100px;
   margin: 0 10px;
-  padding: 30px 10px 15px;
-  display: block;
-  font-weight: 700;
+  padding: 0px;
   color: #FFD700;
   background-color: #104E8B;
   border-radius: 0 0 5px 5px;
   /* the shadow cast by the top leather onto the tabs below: */
   background-image: linear-gradient(rgba(0,0,0,0.4), transparent 10px);
   /* the shadow cast by the tabs onto the paper below: */
-  box-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+  box-shadow: 2px 1px 4px 2px rgba(0,0,0,0.4);
+}
+
+nav a {
+  width: 100%;
+  margin: 0 10px 10px;
+  padding: 30px 10px 15px;
+  display: block;
+  font-weight: 700;
+  color: inherit;
+  border: 3px solid #E6C200;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
 }
 
 nav .current-page  {
@@ -206,18 +213,30 @@ PAGE: DETAIL
   margin-left: 5%;
 }
 
-a.edit {
+div.edit-btn {
   text-align: left;
   display: inline-block;
-  font-size: 1rem;
   border-radius: 0 5px 5px 0;
-  padding: 15px 15px 15px 10%;
-  margin: 0 0 10px -50px;
-  font-weight: 700;
+  padding: 10px 10px 10px 0;
+  margin: 0 0 0 -50px;
   color: #FFD700;
   background-color: #104E8B;
   /* the shadow cast by the tab onto the paper below: */
   box-shadow: 2px 2px 3px rgba(0,0,0,0.6);
+}
+
+a.edit-btn {
+  display: inline-block;
+  width: 100%;
+  color: inherit;
+  font-family: 'Philosopher', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 15px 15px 15px 100px;
+  border: 3px solid #E6C200;
+  border-left: none;
+  border-radius: 0 5px 5px 0;
 }
 
 .entry-text {
@@ -267,20 +286,30 @@ textarea:focus {
     outline: none;
 }
 
-.bottom-tab-btn {
+div.bottom-tab-btn {
   display: block;
-  width: 100px;
+  width: 150px;
   margin: 50px auto -30px;
-  padding: 15px 10px 30px;
-  display: block;
-  font-weight: 700;
-  color: #800020;
-  background-color: #ffd700;
+  padding: 10px 10px 0;
+  color: #ffd700;
+  background-color: #800020;
   border-radius: 5px 5px 0 0;
   /* the shadow cast by the bottom leather onto the tab below: */
   background-image: linear-gradient(to top, rgba(0,0,0,0.4), transparent 5px);
   /* the shadow cast by the tab onto the paper below: */
   box-shadow: 0 0px 2px 1px rgba(0,0,0,0.6);
+}
+
+input.bottom-tab-btn {
+  display: block;
+  padding: 15px 10px 30px;
+  width: 100%;
+  font-weight: 700;
+  border: 3px solid #E6C200;
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+  background-color: rgba(0,0,0,0);
+  color: inherit;
 }
 
 
@@ -297,8 +326,8 @@ RESPONSIVE
 
   header {
     text-shadow: none;
-    text-shadow: 0px 1px #fff,
-                 0px 2px 1px #fff,
+    text-shadow:
+                 0px 1px 1px #fff,
                  0px -1px #111;
   }
 
