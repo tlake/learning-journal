@@ -1,36 +1,8 @@
 {% extends "base.jinja2" %}
 {% block section %}
 
-  {% if request.authenticated_userid %}
-
-    <form class="edit_entry"
-      action="{{ request.route_url('edit', entry_id=entry.id) }}"
-      method="POST">
-
-      <p>Entry Title:</p>
-
-      <input id="entry-title"
-        type="text"
-        name="title"
-        value="{{ entry.title }}" />
-
-      <p>Entry Content:</p>
-
-      <textarea id="entry-text"
-        name="text">{{ entry.text }}</textarea>
-
-      <div class="bottom-tab-btn">
-
-        <input id="post-entry-btn"
-          class="bottom-tab-btn"
-          type="submit"
-          value="Done!"
-          name="Done!"/>
-
-      </div>
-
-    </form>
-
-  {% endif %}
+  <div id='edit-guts'>
+    {% include 'edit_guts.jinja2' %}
+  </div>
 
 {% endblock %}
