@@ -1,15 +1,12 @@
 {% extends "base.jinja2" %}
 {% block section %}
-        <h1 class="entry-header">{{ entry.title }}</h1>
-        <h2 class="entry-header">{{ entry.created.strftime('%b. %d, %Y') }}</h2>
 
-        {% if request.authenticated_userid %}
-        <div class="edit-btn">
-            <a class="edit-btn" href="{{ request.route_url('edit', entry_id=entry.id) }}">Edit This Entry</a>
-        </div>
-        {% endif %}
+    <div id='detail-guts'>
+        {% include 'detail_guts.jinja2' %}
+    </div>
 
-        <span class='entry-text'>
-        <p>{{ entry.text | safe }}</p>
-        </span>
+    <div id='edit-guts' class='hide-on-start'>
+        {% include 'edit_guts.jinja2' %}
+    </div>
+
 {% endblock %}
