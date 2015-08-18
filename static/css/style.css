@@ -31,6 +31,10 @@ a:-webkit-any-link {
   text-decoration: inherit;
 }
 
+.hide-on-start {
+  display: none;
+}
+
 
 
 /********************************
