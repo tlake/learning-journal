@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <title>TLake's Python Learning Journal</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <link href='http://fonts.googleapis.com/css?family=Overlock:400,700|Philosopher:400,700' rel='stylesheet' type='text/css'>
     <link href="/static/css/style.css" rel="stylesheet" type="text/css">
     <link href="/static/css/codehilite.css" rel="stylesheet" type="text/css">
@@ -28,9 +29,9 @@
     </header>
     <nav>
         <ul>
-          <li><a class='nav-link' href="/">Home</a></li>
+          <li><a id='home-btn' class='nav-link' href="/">Home</a></li>
           {% if request.authenticated_userid %}
-          <li><a class='nav-link' id="new-entry-btn" href="{{ request.route_url('create', entry_id='new') }}">New Entry</a></li>
+          <li><a id="new-entry-btn" class='nav-link' href="{{ request.route_url('create', entry_id='new') }}">New Entry</a></li>
           {% endif %}
         </ul>
     </nav>
@@ -41,5 +42,6 @@
     <footer>
         <p>&copy; 2015 Tanner Lake</p>
     </footer>
+    <script src="/static/js/ajax.js"></script>
   </body>
 </html>
