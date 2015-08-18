@@ -146,10 +146,22 @@ def logout(request):
     return HTTPFound(request.route_url('home'), headers=headers)
 
 
+new_entry = {
+    'entry': {
+        'id': 'new',
+        'title': '',
+        'text': '',
+    },
+}
+
+
 @view_config(route_name='home', renderer='templates/list.jinja2')
 def list_view(request):
     entries = Entry.all()
-    return {'entries': entries}
+    return {
+        'entries': entries,
+        'entry': new_entry,
+    }
 
 
 @view_config(route_name='detail', renderer='templates/detail.jinja2')
@@ -169,18 +181,11 @@ def detail_view(request):
 @view_config(route_name="create", renderer="templates/edit.jinja2")
 @view_config(route_name='edit', renderer='templates/edit.jinja2')
 def edit_view(request):
-    # import pdb; pdb.set_trace()
     # There are three ways to get to the edit page:
     # (1): Creating a brand new entry
     # (previous location: home)
     if len(request.matchdict) == 0:
-        to_render = {
-            'entry': {
-                'id': 'new',
-                'title': '',
-                'text': ''
-            }
-        }
+        to_render = new_entry
 
     # (2): Redirect from incomplete submission
     # (previous location: edit_entry)
