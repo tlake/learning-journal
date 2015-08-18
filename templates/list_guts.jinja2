@@ -1,0 +1,12 @@
+
+<ul id="toc">
+{% for entry in entries %}
+  <li class="entry-link">
+    <a href="{{ request.route_url('detail', id=entry.id) }}">
+    {{ entry.created.strftime('%b, %d, %Y') }}: {{ entry.title }}
+    </a>
+  </li>
+{% else %}
+<li>No entries here so far</li>
+</ul>
+{% endfor %}
