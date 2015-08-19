@@ -179,11 +179,17 @@ def list_view(request):
     }
 
 
+@view_config(
+    route_name='detail',
+    request_method='GET',
+    xhr=True,
+    renderer='json',
+)
 @view_config(route_name='detail', renderer='templates/detail.jinja2')
 def detail_view(request):
     entry = Entry.one(request.matchdict['id'])
 
-    return {
+    to_render = {
         "entry": {
             "id": entry.id,
             "title": entry.title,
@@ -192,7 +198,24 @@ def detail_view(request):
         }
     }
 
+    if 'HTTP_X_REQUESTED_WITH' in request.environ:
+        to_render['entry']['created'] = entry.created.isoformat()
 
+    return to_render
+
+
+@view_config(
+    route_name='edit',
+    request_method='GET',
+    xhr=True,
+    renderer='json',
+)
+@view_config(
+    route_name='edit',
+    request_method='POST',
+    xhr=True,
+    renderer='json',
+)
 @view_config(route_name="create", renderer="templates/edit.jinja2")
 @view_config(route_name='edit', renderer='templates/edit.jinja2')
 def edit_view(request):
