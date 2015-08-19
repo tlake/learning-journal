@@ -11,7 +11,7 @@ var clickHandler = function(event) {
             editEntry(event);
             break;
         case 'post-entry-btn':
-            ajaxSaveEntry(event);
+            ajaxSaveNewEntry(event);
             break;
 
     }
@@ -21,23 +21,24 @@ var clickHandler = function(event) {
 var newEntry = function(event) {
     event.preventDefault();
 
-    $('#list-guts').hide();
-    $('#edit-guts').show();
+    $('#primary-content').hide();
+    $('#ajax-content').show();
 };
 
 
 var editEntry = function(event) {
     event.preventDefault();
+
+    var id = $('form').id;
 };
 
-var ajaxSaveEntry = function(event) {
+
+var ajaxSaveNewEntry = function(event) {
     event.preventDefault();
+
     var title = $('#entry-title').val();
     var text = $('#entry-text').val();
     var url = '/edit/new';
-
-    console.log(title);
-    console.log(text);
 
     $.ajax({
         method: 'POST',
@@ -47,8 +48,33 @@ var ajaxSaveEntry = function(event) {
             text: text,
         }
     }).done(function(response) {
-        $('#edit-guts').hide();
-        $('#list-guts').show();
+        ajaxUpdateListView();
+        $('#ajax-content').hide();
+        $('#primary-content').show();
+    }).fail(function() {
+        alert('error');
+    });
+};
+
+
+var ajaxUpdateListView = function() {
+    var url = '/';
+
+    $.ajax({
+        method: 'GET',
+        url: url
+    }).done(function(response) {
+        var entry = response.entries[0];
+        var id = entry.id;
+        var created = moment(entry.created).format('ll');
+        var title = entry.title;
+
+        var $li = $('<li class="entry-link"></li>');
+        var $a = $('<a href="/detail/' + id + '"></a>');
+
+        $a.append(created + ": " + title);
+        $li.append($a);
+        $('#toc').prepend($li);
     }).fail(function() {
         alert('error');
     });
