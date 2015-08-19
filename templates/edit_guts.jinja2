@@ -1,7 +1,8 @@
 
 {% if request.authenticated_userid %}
 
-<form class="edit_entry"
+<form id="{{ entry.id }}"
+  class="edit_entry"
   action="{{ request.route_url('edit', entry_id=entry.id) }}"
   method="POST">
 
