@@ -213,8 +213,17 @@ PAGE: DETAIL
 ********************************/
 
 .entry-header {
-  text-align: center;
+  width: 100%;
   margin-left: 5%;
+}
+
+.entry-header-tweet {
+  display: inline-block;
+}
+
+.entry-header-headings {
+  display: inline-block;
+  text-align: left;
 }
 
 div.edit-btn {
@@ -376,7 +385,6 @@ RESPONSIVE
   /* Page: Detail -------------------------------- */
 
   .entry-header {
-    text-align: justify;
     padding-left: 10%;
   }
 

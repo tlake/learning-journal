@@ -1,5 +1,20 @@
-<h1 id='entry-h1' class="entry-header">{{ entry.title }}</h1>
-<h2 class="entry-header">{{ entry.created.strftime('%b %d, %Y') }}</h2>
+
+<div class='entry-header'>
+    <div class='entry-header-tweet'>
+        <a class="twitter-share-button"
+        url="http://journal.tannerjlake.com/detail/{{ entry.id }}"
+        href="https://twitter.com/intent/tweet?text={{ entry.title }}"
+        data-text="Tweet this entry"
+        data-size="large"
+        data-count='none'>
+        Tweet this entry!
+        </a>
+    </div>
+    <div class='entry-header-headings'>
+        <h1 id='entry-h1' class="entry-header">{{ entry.title }}</h1>
+        <h2 class="entry-header">{{ entry.created.strftime('%b %d, %Y') }}</h2>
+    </div>
+</div>
 
 {% if request.authenticated_userid %}
 <div class="edit-btn">
