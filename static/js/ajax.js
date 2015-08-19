@@ -11,7 +11,11 @@ var clickHandler = function(event) {
             editEntry(event);
             break;
         case 'post-entry-btn':
-            ajaxSaveNewEntry(event);
+            if ( $('#toc').length ) {
+                ajaxSaveNewEntry(event);
+            } else {
+                ajaxSaveEditEntry(event);
+            }
             break;
 
     }
@@ -29,7 +33,20 @@ var newEntry = function(event) {
 var editEntry = function(event) {
     event.preventDefault();
 
-    var id = $('form').id;
+    var url = '/edit/' + $('#edit-btn').data('entry-id');
+
+    $.ajax({
+        method: 'GET',
+        url: url,
+        context: '#ajax-content',
+    }).done( function(response) {
+        $('#entry-title').val(response.entry.title);
+        $('#entry-text').val(response.entry.text);
+        $('#primary-content').hide();
+        $('#ajax-content').show();
+    }).fail( function() {
+        alert('error');
+    });
 };
 
 
@@ -47,11 +64,11 @@ var ajaxSaveNewEntry = function(event) {
             title: title,
             text: text,
         }
-    }).done(function(response) {
+    }).done( function(response) {
         ajaxUpdateListView();
         $('#ajax-content').hide();
         $('#primary-content').show();
-    }).fail(function() {
+    }).fail( function() {
         alert('error');
     });
 };
@@ -63,7 +80,7 @@ var ajaxUpdateListView = function() {
     $.ajax({
         method: 'GET',
         url: url
-    }).done(function(response) {
+    }).done( function(response) {
         var entry = response.entries[0];
         var id = entry.id;
         var created = moment(entry.created).format('ll');
@@ -75,8 +92,51 @@ var ajaxUpdateListView = function() {
         $a.append(created + ": " + title);
         $li.append($a);
         $('#toc').prepend($li);
-    }).fail(function() {
+    }).fail( function() {
         alert('error');
+    });
+};
+
+
+var ajaxSaveEditEntry = function(event) {
+    event.preventDefault();
+
+    var title = $('#entry-title').val();
+    var text = $('#entry-text').val();
+    var entryID = $('#edit-btn').data('entry-id');
+    var url = '/edit/' + entryID;
+
+    $.ajax({
+        method: 'POST',
+        url: url,
+        data: {
+            title: title,
+            text: text,
+        },
+    }).done( function(response) {
+        ajaxUpdateDetailView(entryID);
+        $('#ajax-content').hide();
+        $('#primary-content').show();
+    }).fail( function() {
+        alert('error');
+    });
+};
+
+
+var ajaxUpdateDetailView = function(entryID) {
+    var url = '/detail/' + entryID;
+
+    $.ajax({
+        method: 'GET',
+        url: url,
+        context: '#ajax-content',
+    }).done( function(response) {
+        var entry = response.entry;
+        var title = entry.title;
+        var text = entry.text;
+
+        $('#entry-h1').html(title);
+        $('#entry-span').html(text);
     });
 };
 
