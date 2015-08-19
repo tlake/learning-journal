@@ -1,12 +1,17 @@
-<h1 class="entry-header">{{ entry.title }}</h1>
-<h2 class="entry-header">{{ entry.created.strftime('%b. %d, %Y') }}</h2>
+<h1 id='entry-h1' class="entry-header">{{ entry.title }}</h1>
+<h2 class="entry-header">{{ entry.created.strftime('%b %d, %Y') }}</h2>
 
 {% if request.authenticated_userid %}
 <div class="edit-btn">
-    <a id='edit-btn' class="edit-btn" href="{{ request.route_url('edit', entry_id=entry.id) }}">Edit This Entry</a>
+    <a id='edit-btn'
+        class="edit-btn"
+        data-entry-id="{{ entry.id }}"
+        href="{{ request.route_url('edit', entry_id=entry.id) }}">
+            Edit This Entry
+    </a>
 </div>
 {% endif %}
 
-<span class='entry-text'>
+<span id='entry-span' class='entry-text'>
 <p>{{ entry.text | safe }}</p>
 </span>
