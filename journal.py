@@ -91,6 +91,15 @@ class Entry(Base):
 
         return md
 
+    def __json__(self, request):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'text': self.text,
+            'created': self.created.isoformat(),
+            'markdown': self.mkdwn,
+        }
+
 
 def init_db():
     engine = sa.create_engine(DATABASE_URL, echo=True)
@@ -155,6 +164,12 @@ new_entry = {
 }
 
 
+@view_config(
+    route_name='home',
+    request_method='GET',
+    xhr=True,
+    renderer='json',
+)
 @view_config(route_name='home', renderer='templates/list.jinja2')
 def list_view(request):
     entries = Entry.all()
