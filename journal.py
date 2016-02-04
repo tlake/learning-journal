@@ -24,12 +24,13 @@ import markdown
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DB_USR = os.environ.get(b"USER", )
+DB_USER = 'ubuntu'
+DB_PASS = 'postgres'
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
 DATABASE_URL = os.environ.get(
     b'DATABASE_URL',
-    b'postgresql://' + str(DB_USR) + b'@localhost:5432/learning-journal',
+    b'postgresql://' + str(DB_USER) + ":" + str(DB_PASS) + b'@localhost:5432/learning_journal',
 )
 
 Base = declarative_base()
@@ -314,5 +315,5 @@ def main():
 
 if __name__ == '__main__':
     app = main()
-    port = os.environ.get('PORT', 8000)
+    port = os.getenv('PORT', 5002)
     serve(app, host='0.0.0.0', port=port)
