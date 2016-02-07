@@ -24,8 +24,8 @@ import markdown
 
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DB_USER = 'ubuntu'
-DB_PASS = 'postgres'
+DB_USER = os.getenv("DB_USER")
+DB_PASS = os.getenv("DB_PASS")
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 
 DATABASE_URL = os.environ.get(
